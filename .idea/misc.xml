@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="ES6" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/online-taxi-public/pom.xml" />
+        <option value="$PROJECT_DIR$/service-verificationcode/pom.xml" />
+        <option value="$PROJECT_DIR$/online-taxi-public/service-verificationcode/pom.xml" />
+        <option value="$PROJECT_DIR$/online-taxi-public/internal-common/pom.xml" />
+        <option value="$PROJECT_DIR$/online-taxi-public/api-passenger/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_14" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+</project>

@@ -1,10 +1,10 @@
-package com.fjd.serviceverificationcode;
+package com.fjd.serviceverification;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ServiceVerificationcodeApplicationTests {
+class ServiceVerificationApplicationTests {
 
     @Test
     void contextLoads() {
