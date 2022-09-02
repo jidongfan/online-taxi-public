@@ -9,6 +9,13 @@ import lombok.Getter;
  * @date 2022/8/31 19:01
  */
 public enum  CommonStatusEnum {
+
+    /**
+     * 验证码错误提示：1000-1099
+     * 1000代表验证码已过期，1099代表验证码不正确
+     */
+    VERIFICATION_CODE_ERROR(1099,"验证码不正确"),
+
     /**
      * 成功
      * */
