@@ -1,11 +1,11 @@
-package com.fjd.apipassenger.request;
+package com.fjd.internalcommon.request;
 
 import lombok.Data;
 
 /**
  * @author fanjidong
  * @version 1.0
- * @date 2022/8/30 15:12
+ * @date 2022/9/2 14:32
  */
 @Data
 public class VerificationCodeDTO {

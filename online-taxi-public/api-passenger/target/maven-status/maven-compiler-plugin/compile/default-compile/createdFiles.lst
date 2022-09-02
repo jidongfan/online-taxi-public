@@ -1,6 +1,0 @@
-com\fjd\apipassenger\controller\TestController.class
-com\fjd\apipassenger\controller\VerificationCodeController.class
-com\fjd\apipassenger\request\VerificationCodeDTO.class
-com\fjd\apipassenger\ApiPassengerApplication.class
-com\fjd\apipassenger\remote\ServiceVerificationcodeClient.class
-com\fjd\apipassenger\service\VerificationCodeService.class

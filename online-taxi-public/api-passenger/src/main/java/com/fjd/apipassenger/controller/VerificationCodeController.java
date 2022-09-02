@@ -1,6 +1,5 @@
 package com.fjd.apipassenger.controller;
 
-import com.fjd.apipassenger.request.VerificationCodeDTO;
 import com.fjd.apipassenger.service.VerificationCodeService;
 import com.fjd.internalcommon.dto.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
