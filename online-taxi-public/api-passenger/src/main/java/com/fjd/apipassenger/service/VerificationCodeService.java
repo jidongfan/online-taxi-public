@@ -1,7 +1,9 @@
 package com.fjd.apipassenger.service;
+import com.fjd.apipassenger.remote.ServicePassengerUserClient;
 import com.fjd.apipassenger.remote.ServiceVerificationcodeClient;
 import com.fjd.internalcommon.constant.CommonStatusEnum;
 import com.fjd.internalcommon.dto.ResponseResult;
+import com.fjd.internalcommon.request.VerificationCodeDTO;
 import com.fjd.internalcommon.response.NumberCodeResponse;
 import com.fjd.internalcommon.response.TokenResponse;
 import jdk.management.resource.ResourceType;
@@ -29,6 +31,9 @@ public class VerificationCodeService {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private ServicePassengerUserClient servicePassengerUserClient;
 
     /**
      * 生成验证码
@@ -82,7 +87,6 @@ public class VerificationCodeService {
 
         //根据key获取value
         String codeRedis = stringRedisTemplate.opsForValue().get(key);
-        System.out.println("redis中的value："+codeRedis);
 
         //校验验证码
         if(StringUtils.isBlank(codeRedis)){
@@ -93,7 +97,10 @@ public class VerificationCodeService {
         }
 
         //判断原来是否有用户，并进行对应的处理
-        System.out.println("判断原来是否有用户，并进行对应的处罚");
+        VerificationCodeDTO verificationCodeDTO = new VerificationCodeDTO();
+        verificationCodeDTO.setPassengerPhone(passengerPhone);
+        servicePassengerUserClient.loginOrRegister(verificationCodeDTO);
+
 
         //颁发令牌
         System.out.println("颁发令牌");
