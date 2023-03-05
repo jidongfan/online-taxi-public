@@ -4,6 +4,8 @@ import com.fjd.internalcommon.constant.CommonStatusEnum;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.response.NumberCodeResponse;
 import com.fjd.internalcommon.response.TokenResponse;
+import jdk.management.resource.ResourceType;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -37,16 +39,25 @@ public class VerificationCodeService {
         //调用验证码服务，获取验证码
         System.out.println("调用验证码服务，获取验证码");
 
-        ResponseResult<NumberCodeResponse> numberCodeResponse = serviceVerificationcodeClient.getNumberCode(7);
+        ResponseResult<NumberCodeResponse> numberCodeResponse = serviceVerificationcodeClient.getNumberCode(6);
         int numberCode = numberCodeResponse.getData().getNumberCode();
+        System.out.println(numberCode);
 
+        //存入redis
+        System.out.println("存入redis");
         //key,value,过期时间
         String key = generatorKeyByPhone(passengerPhone);
         //存入redis，设置两分钟后过期
         stringRedisTemplate.opsForValue().set(key,numberCode+"",2, TimeUnit.MINUTES);
 
         //通过短信服务商，将对应的验证码发送到手机上，阿里短信服务、腾讯短信通、华信、容联
-        return ResponseResult.success("");
+       // return ResponseResult.success("");
+
+
+
+
+        return ResponseResult.success();
+
     }
 
     /**

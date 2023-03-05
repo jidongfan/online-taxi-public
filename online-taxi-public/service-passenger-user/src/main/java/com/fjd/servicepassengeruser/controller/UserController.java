@@ -24,6 +24,6 @@ public class UserController {
 
         String passengerPhone = verificationCodeDTO.getPassengerPhone();
         System.out.println("手机号："+passengerPhone);
-        return ResponseResult.success(passengerPhone);
+        return userService.loginOrRegister(passengerPhone);
     }
 }

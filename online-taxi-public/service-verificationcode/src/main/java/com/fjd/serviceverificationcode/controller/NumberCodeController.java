@@ -2,6 +2,7 @@ package com.fjd.serviceverificationcode.controller;
 
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.response.NumberCodeResponse;
+import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,4 +31,5 @@ public class NumberCodeController {
         response.setNumberCode(resultInt);
         return ResponseResult.success(response);
     }
+
 }
