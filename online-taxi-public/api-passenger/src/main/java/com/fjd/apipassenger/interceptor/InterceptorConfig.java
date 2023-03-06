@@ -1,6 +1,7 @@
 package com.fjd.apipassenger.interceptor;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -17,8 +18,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new JwtInterceptor())
         //拦截的路径
-                .addPathPatterns("/**")
+                .addPathPatterns("/authTest")
         //不拦截的路径
-                .excludePathPatterns("/noAuthTest");
+                .excludePathPatterns("/**");
     }
 }
