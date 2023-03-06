@@ -44,14 +44,11 @@ public class VerificationCodeService {
      */
     public ResponseResult generatorCode(String passengerPhone){
         //调用验证码服务，获取验证码
-        System.out.println("调用验证码服务，获取验证码");
-
         ResponseResult<NumberCodeResponse> numberCodeResponse = serviceVerificationcodeClient.getNumberCode(6);
         int numberCode = numberCodeResponse.getData().getNumberCode();
         System.out.println(numberCode);
 
         //存入redis
-        System.out.println("存入redis");
         //key,value,过期时间
         String key = generatorKeyByPhone(passengerPhone);
         //存入redis，设置两分钟后过期
@@ -102,7 +99,6 @@ public class VerificationCodeService {
         VerificationCodeDTO verificationCodeDTO = new VerificationCodeDTO();
         verificationCodeDTO.setPassengerPhone(passengerPhone);
         servicePassengerUserClient.loginOrRegister(verificationCodeDTO);
-
 
         //颁发令牌，不应该用魔法值，用常量
         String token = JwtUtils.generatorToken(passengerPhone, IdentityConstant.PASSENGER_IDENTITY);

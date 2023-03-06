@@ -21,22 +21,26 @@ public class VerificationCodeController {
     @Autowired
     private VerificationCodeService verificationCodeService;
 
+    /**
+     * 通过手机号 获取自动生成验证码 存入redis
+     * @param verificationCodeDTO
+     * @return
+     */
     @GetMapping("/verification-code")
     public ResponseResult verificationCode(@RequestBody VerificationCodeDTO verificationCodeDTO){
-
         String passengerPhone = verificationCodeDTO.getPassengerPhone();
-        System.out.println("接收到的手机号参数：" + passengerPhone);
         return verificationCodeService.generatorCode(passengerPhone);
     }
 
+    /**
+     * 通过验证码与手机号，生成token
+     * @param verificationCodeDTO
+     * @return
+     */
     @PostMapping("/verification-code-check")
     public ResponseResult checkVerificationCode(@RequestBody VerificationCodeDTO verificationCodeDTO){
-
         String passengerPhone = verificationCodeDTO.getPassengerPhone();
         String verificationCode = verificationCodeDTO.getVerificationCode();
-
-        System.out.println("手机号："+passengerPhone+"，验证码："+verificationCode);
-
         return verificationCodeService.checkCode(passengerPhone, verificationCode);
     }
 
