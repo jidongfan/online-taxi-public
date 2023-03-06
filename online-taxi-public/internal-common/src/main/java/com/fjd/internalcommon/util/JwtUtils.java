@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fjd.internalcommon.dto.TokenResult;
 import org.apache.commons.collections.map.HashedMap;
 
 import javax.xml.crypto.Data;
@@ -25,12 +26,15 @@ public class JwtUtils {
     //言 security
     private static final String SIGN = "CPFfjd!@#$$";
 
-    public final static String JWT_KEY = "passengerPhone";
+    public final static String JWT_KEY_PHONE = "phone";
+
+    public final static String JWT_KEY_IDENTITY = "identity"; //一个phone登录 分为 乘客端1 和 司机端2
 
     //生成token map用户名 密码
-    public static String generatorToken(String passengerPhone){
+    public static String generatorToken(String passengerPhone, String identity){
         Map<String, String> map = new HashMap<>();
-        map.put(JWT_KEY, passengerPhone);
+        map.put(JWT_KEY_PHONE, passengerPhone);
+        map.put(JWT_KEY_IDENTITY, identity);
         //token过期时间
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, 1);
@@ -52,17 +56,21 @@ public class JwtUtils {
     }
 
     //解析token
-    public static String parseToken(String token){
+    public static TokenResult parseToken(String token){
         DecodedJWT verify = JWT.require(Algorithm.HMAC256(SIGN)).build().verify(token);
-        Claim claim = verify.getClaim(JWT_KEY);
-        System.out.println(claim.toString());
-        return claim.toString();
+        String phone = verify.getClaim(JWT_KEY_PHONE).toString();
+        String identity = verify.getClaim(JWT_KEY_IDENTITY).toString();
+
+        TokenResult tokenResult = new TokenResult();
+        tokenResult.setPhone(phone);
+        tokenResult.setIdentity(identity);
+        return tokenResult;
     }
 
     public static void main(String[] args) {
-        String token = generatorToken("123456789");
+        String token = generatorToken("123456789", "1");
         System.out.println(token);
-        String parseToken = parseToken(token);
+        TokenResult parseToken = parseToken(token);
         System.out.println(parseToken);
 
     }

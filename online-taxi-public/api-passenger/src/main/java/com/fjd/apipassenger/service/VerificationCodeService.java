@@ -2,10 +2,12 @@ package com.fjd.apipassenger.service;
 import com.fjd.apipassenger.remote.ServicePassengerUserClient;
 import com.fjd.apipassenger.remote.ServiceVerificationcodeClient;
 import com.fjd.internalcommon.constant.CommonStatusEnum;
+import com.fjd.internalcommon.constant.IdentityConstant;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.VerificationCodeDTO;
 import com.fjd.internalcommon.response.NumberCodeResponse;
 import com.fjd.internalcommon.response.TokenResponse;
+import com.fjd.internalcommon.util.JwtUtils;
 import jdk.management.resource.ResourceType;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -102,12 +104,12 @@ public class VerificationCodeService {
         servicePassengerUserClient.loginOrRegister(verificationCodeDTO);
 
 
-        //颁发令牌
-        System.out.println("颁发令牌");
+        //颁发令牌，不应该用魔法值，用常量
+        String token = JwtUtils.generatorToken(passengerPhone, IdentityConstant.PASSENGER_IDENTITY);
 
         //响应
         TokenResponse tokenResponse = new TokenResponse();
-        tokenResponse.setToken("token value");
+        tokenResponse.setToken(token);
 
         return ResponseResult.success(tokenResponse);
     }
