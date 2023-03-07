@@ -4,6 +4,7 @@ import com.alibaba.cloud.commons.lang.StringUtils;
 import com.auth0.jwt.exceptions.AlgorithmMismatchException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.fjd.internalcommon.constant.TokenConstants;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.dto.TokenResult;
 import com.fjd.internalcommon.util.JwtUtils;
@@ -63,7 +64,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             String phone = tokenResult.getPhone();
             String identity = tokenResult.getIdentity();
 
-            String tokenKey = RedisPrefixUtils.generatorTokenKey(phone, identity);
+            String tokenKey = RedisPrefixUtils.generatorTokenKey(phone, identity, TokenConstants.ACCESS_TOKEN_TYPE);
             //从redis中取出token，会出现空指针异常，因为JwtInterceptor拦截器会再bean初始化之前初始化，所以stringRedisTemplate还没有注入进来
             //解决：在拦截器初始化之前初始化bean
 //                @Bean

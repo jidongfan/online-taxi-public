@@ -6,7 +6,7 @@ package com.fjd.internalcommon.constant;
  * @Date: 2023/3/6 21:16
  * @desc:
  */
-public class IdentityConstant {
+public class IdentityConstants {
 
     //乘客身份
     public static final String PASSENGER_IDENTITY = "1";

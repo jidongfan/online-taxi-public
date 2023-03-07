@@ -30,11 +30,14 @@ public class JwtUtils {
 
     public final static String JWT_KEY_IDENTITY = "identity"; //一个phone登录 分为 乘客端1 和 司机端2
 
+    private static final String JWT_KEY_TYPE = "tokenType";
+
     //生成token map用户名 密码
-    public static String generatorToken(String passengerPhone, String identity){
+    public static String generatorToken(String passengerPhone, String identity, String tokenType){
         Map<String, String> map = new HashMap<>();
         map.put(JWT_KEY_PHONE, passengerPhone);
         map.put(JWT_KEY_IDENTITY, identity);
+        map.put(JWT_KEY_TYPE, tokenType);
         //token过期时间
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, 1);
@@ -68,7 +71,7 @@ public class JwtUtils {
     }
 
     public static void main(String[] args) {
-        String token = generatorToken("123456789", "1");
+        String token = generatorToken("123456789", "1", "accessToken");
         System.out.println(token);
         TokenResult parseToken = parseToken(token);
         System.out.println(parseToken);
