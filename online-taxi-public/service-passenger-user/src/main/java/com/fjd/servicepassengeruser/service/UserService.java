@@ -1,12 +1,11 @@
 package com.fjd.servicepassengeruser.service;
 
+import com.fjd.internalcommon.dto.PassengerUser;
 import com.fjd.internalcommon.dto.ResponseResult;
-import com.fjd.servicepassengeruser.dto.PassengerUser;
 import com.fjd.servicepassengeruser.mapper.PassengerUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.PolicySpi;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;

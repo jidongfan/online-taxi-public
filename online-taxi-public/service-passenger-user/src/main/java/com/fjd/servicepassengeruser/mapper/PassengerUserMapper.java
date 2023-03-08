@@ -1,7 +1,7 @@
 package com.fjd.servicepassengeruser.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.fjd.servicepassengeruser.dto.PassengerUser;
+import com.fjd.internalcommon.dto.PassengerUser;
 import org.springframework.stereotype.Repository;
 
 /**

@@ -1,4 +1,4 @@
-package com.fjd.servicepassengeruser.dto;
+package com.fjd.internalcommon.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,4 +31,6 @@ public class PassengerUser {
     private byte passengerGender;
 
     private byte state;
+
+    private String profilePhoto;
 }
