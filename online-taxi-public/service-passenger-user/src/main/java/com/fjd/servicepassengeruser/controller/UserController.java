@@ -1,13 +1,11 @@
 package com.fjd.servicepassengeruser.controller;
 
+import com.fjd.internalcommon.dto.PassengerUser;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.VerificationCodeDTO;
 import com.fjd.servicepassengeruser.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author fanjidong
@@ -29,19 +27,20 @@ public class UserController {
     public ResponseResult loginOrRegister(@RequestBody VerificationCodeDTO verificationCodeDTO){
 
         String passengerPhone = verificationCodeDTO.getPassengerPhone();
+        System.out.println("手机号："+passengerPhone);
         return userService.loginOrRegister(passengerPhone);
     }
 
 
     /**
      * 根据手机号查询用户信息
-     * @param verificationCodeDTO
+     * @param passengerPhone
      * @return
      */
-    @GetMapping("/user")
-    public ResponseResult getUser(@RequestBody VerificationCodeDTO verificationCodeDTO){
+    @GetMapping("/user/{phone}")
+    public ResponseResult<PassengerUser> getUser(@PathVariable("phone") String passengerPhone){
 
-        String passengerPhone = verificationCodeDTO.getPassengerPhone();
+        System.out.println("user-passenger-service：" + passengerPhone);
         return userService.getUserByPhone(passengerPhone);
     }
 }

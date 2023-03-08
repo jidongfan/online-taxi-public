@@ -59,7 +59,7 @@ public class UserService {
      * @param passengerPhone
      * @return
      */
-    public ResponseResult getUserByPhone(String passengerPhone){
+    public ResponseResult<PassengerUser> getUserByPhone(String passengerPhone){
         //根据手机号查询用户信息
         Map<String, Object> map = new HashMap<>();
         map.put("passenger_phone", passengerPhone);
