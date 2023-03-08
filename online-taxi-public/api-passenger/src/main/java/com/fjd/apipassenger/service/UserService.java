@@ -2,6 +2,8 @@ package com.fjd.apipassenger.service;
 
 import com.fjd.internalcommon.dto.PassengerUser;
 import com.fjd.internalcommon.dto.ResponseResult;
+import com.fjd.internalcommon.dto.TokenResult;
+import com.fjd.internalcommon.util.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,9 @@ public class UserService {
         log.info("accessToken:" + accessToken);
 
         //解析accessToken，拿到手机号
+        TokenResult tokenResult = JwtUtils.checkToken(accessToken);
+        String phone = tokenResult.getPhone();
+        log.info("乘客手机号Phone: " + phone);
 
         //根据手机号查询用户信息
 
