@@ -1,9 +1,12 @@
 package com.fjd.serviceprice.service;
 
+import com.fjd.internalcommon.constant.CommonStatusEnum;
+import com.fjd.internalcommon.dto.PriceRule;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.ForecastPriceDTO;
 import com.fjd.internalcommon.response.DirectionResponse;
 import com.fjd.internalcommon.response.ForecastPriceResponse;
+import com.fjd.serviceprice.mapper.PriceRuleMapper;
 import com.fjd.serviceprice.remote.ServiceMapClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author: fanjidong R22496
@@ -26,6 +31,9 @@ public class ForecastPriceService {
 
     @Autowired
     private ServiceMapClient serviceMapClient;
+
+    @Autowired
+    PriceRuleMapper priceRuleMapper;
 
 
     /**
@@ -56,6 +64,16 @@ public class ForecastPriceService {
         log.info("距离：" + distance + "时长：" + duration    );
 
         log.info("读取计价规则");
+        HashMap<String, Object> queryMap = new HashMap<>();
+        queryMap.put("city_code","110000");
+        queryMap.put("vehicle_type","1");
+        List<PriceRule> priceRules = priceRuleMapper.selectByMap(queryMap);
+        if(priceRules.size() == 0){
+            return ResponseResult.fail(CommonStatusEnum.PRICE_RULE_EMPTY.getValue());
+        }
+
+        PriceRule priceRule = priceRules.get(0);
+
         log.info("根据距离、时长和计价规则，计算价格");
 
         ForecastPriceResponse forecastPriceResponse = new ForecastPriceResponse();
