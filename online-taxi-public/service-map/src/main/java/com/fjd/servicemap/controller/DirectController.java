@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * @Date: 2023/3/9 21:32
  * @desc:
  */
-@RestController()
+@RestController
 @RequestMapping("/direction")
 public class DirectController {
 
