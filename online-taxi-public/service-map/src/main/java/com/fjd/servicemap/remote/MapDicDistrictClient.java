@@ -39,8 +39,6 @@ public class MapDicDistrictClient {
 
         //获取值
         ResponseEntity<String> forEntity = restTemplate.getForEntity(url.toString(), String.class);
-
-
         return forEntity.getBody();
     }
 
