@@ -1,5 +1,6 @@
 package com.fjd.apipassenger.controller;
 
+import com.fjd.apipassenger.remote.ServicePriceClient;
 import com.fjd.apipassenger.service.ForecastPriceService;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.ForecastPriceDTO;
