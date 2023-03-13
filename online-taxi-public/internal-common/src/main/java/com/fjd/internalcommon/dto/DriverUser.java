@@ -2,6 +2,8 @@ package com.fjd.internalcommon.dto;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+
 /**
  * @author: fanjidong R22496
  * @version: 1.0
@@ -16,26 +18,27 @@ public class DriverUser {
     private String driverName;
     private String driverPhone;
     private Integer driverGender;
-    private Data driverBirthday;
+    private LocalDate driverBirthday;
     private String driverNation;
     private String driverContactAddress;
     private String licenseId;
-    private Data getDriverLicenseDate;
-    private Data driverLicenseOn;
-    private Data driverLicenseOff;
+    private LocalDate getDriverLicenseDate;
+    private LocalDate driverLicenseOn;
+    private LocalDate driverLicenseOff;
     private Integer taxiDriver;
     private String certificateNo;
     private String networkCarIssueOrganization;
-    private Data networkCarIssueDate;
-    private Data getNetworkCarProofDate;
-    private Data networkCarProofOn;
-    private Data networkCarProofOff;
-    private Data registerDate;
+    private LocalDate networkCarIssueDate;
+    private LocalDate getNetworkCarProofDate;
+    private LocalDate networkCarProofOn;
+    private LocalDate networkCarProofOff;
+    private LocalDate registerDate;
     private Integer commercialType;
     private String contractCompany;
-    private Data contractOn;
-    private Data contractOff;
+    private LocalDate contractOn;
+    private LocalDate contractOff;
     private Integer state;
+
     private Data gmtCreate;
     private Data gmtModified;
 
