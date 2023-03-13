@@ -3,6 +3,8 @@ package com.fjd.internalcommon.dto;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author: fanjidong R22496
@@ -13,7 +15,7 @@ import java.time.LocalDate;
 @Data
 public class DriverUser {
 
-    private Integer id;
+    private Long id;
     private String address;
     private String driverName;
     private String driverPhone;
@@ -39,7 +41,7 @@ public class DriverUser {
     private LocalDate contractOff;
     private Integer state;
 
-    private Data gmtCreate;
-    private Data gmtModified;
+    private LocalDateTime gmtCreate;
+    private LocalDateTime gmtModified;
 
 }
