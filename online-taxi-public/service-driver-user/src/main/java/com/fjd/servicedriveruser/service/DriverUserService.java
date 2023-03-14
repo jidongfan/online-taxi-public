@@ -27,6 +27,11 @@ public class DriverUserService {
         return ResponseResult.success(driverUser);
     }
 
+    /**
+     * 司机信息的创建
+     * @param driverUser
+     * @return
+     */
     public ResponseResult addUser(DriverUser driverUser){
 
         LocalDateTime now = LocalDateTime.now();
@@ -35,6 +40,18 @@ public class DriverUserService {
 
         driverUserMapper.insert(driverUser);
 
+        return ResponseResult.success();
+    }
+
+    /**
+     * 司机信息的修改
+     * @param driverUser
+     * @return
+     */
+    public ResponseResult updateDriverUser(DriverUser driverUser){
+        LocalDateTime now = LocalDateTime.now();
+        driverUser.setGmtModified(now);
+        driverUserMapper.updateById(driverUser);
         return ResponseResult.success();
     }
 
