@@ -17,4 +17,26 @@ public class DriverCarConstants {
      * 司机车辆状态：解绑2
      */
     public static Integer DRIVER_CAR_UNBIND = 2;
+
+    /**
+     * 司机状态：1是有效
+     */
+    public static Integer DRIVER_STATE_VALID = 1;
+
+    /**
+     * 司机状态：0是无效
+     */
+    public static Integer DRIVER_STATE_INVALID = 0;
+
+    /**
+     * 司机状态：存在 1
+     */
+    public static Integer DRIVER_EXISTS = 1;
+
+    /**
+     * 司机状态：不存在 0
+     */
+    public static Integer DRIVER_NOT_EXITS = 0;
+
+
 }
