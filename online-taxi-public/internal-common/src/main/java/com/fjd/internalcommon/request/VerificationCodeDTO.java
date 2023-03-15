@@ -10,7 +10,18 @@ import lombok.Data;
 @Data
 public class VerificationCodeDTO {
 
+    /**
+     * 乘客手机号
+     */
     private String passengerPhone;
+    /**
+     * 乘客验证码
+     */
     private String verificationCode;
+
+    /**
+     * 司机手机号
+     */
+    private String driverPhone;
 
 }
