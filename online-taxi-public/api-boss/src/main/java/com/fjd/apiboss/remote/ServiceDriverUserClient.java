@@ -1,6 +1,7 @@
 package com.fjd.apiboss.remote;
 
 import com.fjd.internalcommon.dto.Car;
+import com.fjd.internalcommon.dto.DriverCarBindingRelationship;
 import com.fjd.internalcommon.dto.DriverUser;
 import com.fjd.internalcommon.dto.ResponseResult;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -25,5 +26,11 @@ public interface ServiceDriverUserClient {
 
     @RequestMapping(method = RequestMethod.POST, value = "/car")
     public ResponseResult addCar(@RequestBody Car car);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/driverCarBindingRelationship/bind")
+    public ResponseResult bind(@RequestBody DriverCarBindingRelationship driverCarBindingRelationship);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/driverCarBindingRelationship/unbind")
+    public ResponseResult unbind(@RequestBody DriverCarBindingRelationship driverCarBindingRelationship);
 
 }
