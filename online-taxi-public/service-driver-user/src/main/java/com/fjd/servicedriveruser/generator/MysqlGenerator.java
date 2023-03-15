@@ -32,7 +32,7 @@ public class MysqlGenerator {
                 //生成策略
                 .strategyConfig(builder -> {
                     //生成表名
-                    builder.addInclude("car");
+                    builder.addInclude("driver_car_binding_relationship");
                 })
                 //模板引擎
                 .templateEngine(new FreemarkerTemplateEngine())
