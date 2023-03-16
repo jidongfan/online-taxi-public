@@ -1,10 +1,12 @@
 package com.fjd.apidriver.service;
 
 import com.fjd.apidriver.remote.ServiceDriverUserClient;
+import com.fjd.apidriver.remote.ServviceVerificationcodeClient;
 import com.fjd.internalcommon.constant.CommonStatusEnum;
 import com.fjd.internalcommon.constant.DriverCarConstants;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.response.DriverUserExistsResponse;
+import com.fjd.internalcommon.response.NumberCodeResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,9 @@ public class VerificationDriverService {
     @Autowired
     private ServiceDriverUserClient serviceDriverUserClient;
 
+    @Autowired
+    private ServviceVerificationcodeClient servviceVerificationcodeClient;
+
     public ResponseResult checkAndSendVerificationCode(String driverPhone){
 
         //查询 service-driver-user服务中 ，该手机号的司机存不存在
@@ -33,11 +38,15 @@ public class VerificationDriverService {
         Integer ifExists = data.getIfExists();
         if(DriverCarConstants.DRIVER_NOT_EXITS.equals(ifExists)){
             return ResponseResult.fail(CommonStatusEnum.DRIVER_NOT_EXISTS.getCode(), CommonStatusEnum.DRIVER_NOT_EXISTS.getValue());
+
         }
-        log.info(driverPhone + "的司机不存在");
 
 
         //获取验证码
+        ResponseResult<NumberCodeResponse> numberCodeResult = servviceVerificationcodeClient.getVerificationCode(6);
+        NumberCodeResponse numberCodeResponse = numberCodeResult.getData();
+        int numberCode = numberCodeResponse.getNumberCode();
+        log.info("验证码："+numberCode);
 
         //调用第三方，发送验证码
 
