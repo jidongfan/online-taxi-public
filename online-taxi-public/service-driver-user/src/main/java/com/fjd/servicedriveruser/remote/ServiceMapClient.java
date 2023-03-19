@@ -26,7 +26,7 @@ public interface ServiceMapClient {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, value = "/terminal/add")
-    public ResponseResult<TerminalResponse> addTerminal(@RequestParam String name);
+    public ResponseResult<TerminalResponse> addTerminal(@RequestParam String name, @RequestParam String desc);
 
     /**
      * 创建车辆轨迹

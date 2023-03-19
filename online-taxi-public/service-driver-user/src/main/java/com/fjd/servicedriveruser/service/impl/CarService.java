@@ -39,8 +39,11 @@ public class CarService {
         car.setGmtModified(now);
         car.setGmtCreate(now);
 
+        //提前是为了生成车辆id
+        carMapper.insert(car);
+
         // 获得此车辆 对应的 tid
-        ResponseResult<TerminalResponse> responseResult = serviceMapClient.addTerminal(car.getVehicle());
+        ResponseResult<TerminalResponse> responseResult = serviceMapClient.addTerminal(car.getVehicle(), car.getId() + "");
         String tid = responseResult.getData().getTid();
         car.setTid(tid);
 
@@ -51,7 +54,9 @@ public class CarService {
         car.setTrid(trid);
         car.setTrname(trname);
 
-        carMapper.insert(car);
+        carMapper.updateById(car);
+
+
         return ResponseResult.success("");
     }
 
