@@ -16,11 +16,12 @@ public class RedisPrefixUtils {
 
     /**
      * 根据手机号生成key
-     * @param passengerPhone 手机号
+     * @param phone 手机号
+     * @param identity 身份标识：司机还是乘客
      * @return
      */
-    public static String generatorKeyByPhone(String passengerPhone){
-        return verificationCodePerfix + passengerPhone;
+    public static String generatorKeyByPhone(String phone, String identity){
+        return verificationCodePerfix + identity + "-" + phone;
     }
 
 

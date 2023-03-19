@@ -1,6 +1,7 @@
 package com.fjd.apipassenger.controller;
 
 import com.fjd.apipassenger.service.VerificationCodeService;
+import com.fjd.internalcommon.constant.IdentityConstants;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.VerificationCodeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,11 @@ public class VerificationCodeController {
     @GetMapping("/verification-code")
     public ResponseResult verificationCode(@RequestBody VerificationCodeDTO verificationCodeDTO){
         String passengerPhone = verificationCodeDTO.getPassengerPhone();
-        return verificationCodeService.generatorCode(passengerPhone);
+        return verificationCodeService.generatorCode(passengerPhone, IdentityConstants.PASSENGER_IDENTITY);
     }
 
     /**
-     * 通过验证码与手机号，生成token
+     * 通过验证码与手机号，验证验证码 生成token
      * @param verificationCodeDTO
      * @return
      */
@@ -41,7 +42,7 @@ public class VerificationCodeController {
     public ResponseResult checkVerificationCode(@RequestBody VerificationCodeDTO verificationCodeDTO){
         String passengerPhone = verificationCodeDTO.getPassengerPhone();
         String verificationCode = verificationCodeDTO.getVerificationCode();
-        return verificationCodeService.checkCode(passengerPhone, verificationCode);
+        return verificationCodeService.checkCode(passengerPhone, IdentityConstants.PASSENGER_IDENTITY, verificationCode);
     }
 
 
