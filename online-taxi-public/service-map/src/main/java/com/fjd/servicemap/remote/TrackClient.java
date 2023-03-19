@@ -1,24 +1,25 @@
 package com.fjd.servicemap.remote;
 
+import com.alibaba.cloud.commons.lang.StringUtils;
 import com.fjd.internalcommon.constant.AmapConfigConstants;
 import com.fjd.internalcommon.dto.ResponseResult;
-import com.fjd.internalcommon.response.TerminalResponse;
+import com.fjd.internalcommon.response.TrackResponse;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 import org.springframework.web.client.RestTemplate;
 
 /**
  * @author: fanjidong R22496
  * @version: 1.0
- * @Date: 2023/3/19 8:40
+ * @Date: 2023/3/19 11:01
  * @desc:
  */
 @Service
-public class TerminalClient {
-
+public class TrackClient {
     @Value("${map.key}")
     private String amapKey;
 
@@ -28,40 +29,46 @@ public class TerminalClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    public ResponseResult<TerminalResponse> add(String name){
+    public ResponseResult<TrackResponse> add(String tid){
         //拼装请求的url
         StringBuilder url = new StringBuilder();
-        url.append(AmapConfigConstants.TERMINAL_ADD);
+        url.append(AmapConfigConstants.TRACK_ADD);
         url.append("?");
         url.append("key=" + amapKey);
         url.append("&");
         url.append("sid=" + amapsid);
         url.append("&");
-        url.append("name=" + name);
+        url.append("tid=" + tid);
 
         //获取值
         ResponseEntity<String> forEntity = restTemplate.postForEntity(url.toString(), null, String.class);
         /**
          * 解析json
-         *{
-         *     "data": {
-         *         "name": "车辆1",
-         *         "tid": 651227363,
-         *         "sid": 901235
-         *     },
-         *     "errcode": 10000,
-         *     "errdetail": null,
-         *     "errmsg": "OK"
-         * }
+         {
+         "data": {
+         "trname": "测试轨迹",
+         "trid": 60
+         },
+         "errcode": 10000,
+         "errdetail": null,
+         "errmsg": "OK"
+         }
          */
         String body = forEntity.getBody();
         JSONObject result = JSONObject.fromObject(body);
         JSONObject data = result.getJSONObject("data");
-        String tid = data.getString("tid");
+        //轨迹id
+        String trid = data.getString("trid");
+        //轨迹名称
+        String trname = null;
+        if(data.has("trname")){
+            trname = data.getString("trname");
+        }
         //封装data，返回
-        TerminalResponse terminalResponse = new TerminalResponse();
-        terminalResponse.setTid(tid);
+        TrackResponse trackResponse = new TrackResponse();
+        trackResponse.setTrid(trid);
+        trackResponse.setTrname(trname);
 
-        return ResponseResult.success(terminalResponse);
+        return ResponseResult.success(trackResponse);
     }
 }

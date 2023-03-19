@@ -35,6 +35,8 @@ public class CarService {
         String tid = responseResult.getData().getTid();
         car.setTid(tid);
 
+        // 获得此车辆的轨迹id trid
+
         carMapper.insert(car);
         return ResponseResult.success("");
     }
