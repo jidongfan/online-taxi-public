@@ -10,6 +10,7 @@
 }
 
 终端创建
+终端1
 {
     "data": {
         "name": "车辆1",
@@ -19,4 +20,35 @@
     "errcode": 10000,
     "errdetail": null,
     "errmsg": "OK"
+}
+终端2
+{
+    "data": {
+        "name": "车辆3",
+        "tid": 652340926,
+        "sid": 901235
+    },
+    "errcode": 10000,
+    "errdetail": null,
+    "errmsg": "OK"
+}
+终端2轨迹
+{
+    "data": {
+        "trname": "车辆3的轨迹",
+        "trid": 80
+    },
+    "errcode": 10000,
+    "errdetail": null,
+    "errmsg": "OK"
+}
+
+创建终端请求：https://tsapi.amap.com/v1/track/terminal/add?key=b808311f7b2ebc7faa4d711e36d8ed76&sid=900174&name=云1234567&desc=10002
+创建终端响应：{"data":{"name":"云1234567","tid":652530061,"sid":900174},"errcode":10000,"errdetail":null,"errmsg":"OK"}
+{
+    "code": 1,
+    "message": "success",
+    "data": {
+        "tid": "652530061"
+    }
 }

@@ -24,12 +24,13 @@ public class TerminalController {
     /**
      * 创建终端
      * @param name
+     * @param desc 终端描述
      * @return
      */
     @RequestMapping("/add")
-    public ResponseResult<TerminalResponse> add(@RequestParam String name){
+    public ResponseResult<TerminalResponse> add(@RequestParam String name, String desc){
 
-        return terminalService.add(name);
+        return terminalService.add(name, desc);
     }
 
 }

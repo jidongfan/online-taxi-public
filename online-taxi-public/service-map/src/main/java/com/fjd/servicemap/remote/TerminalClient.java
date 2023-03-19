@@ -28,7 +28,7 @@ public class TerminalClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    public ResponseResult<TerminalResponse> add(String name){
+    public ResponseResult<TerminalResponse> add(String name, String desc){
         //拼装请求的url
         StringBuilder url = new StringBuilder();
         url.append(AmapConfigConstants.TERMINAL_ADD);
@@ -38,9 +38,13 @@ public class TerminalClient {
         url.append("sid=" + amapsid);
         url.append("&");
         url.append("name=" + name);
+        url.append("&");
+        url.append("desc=" + desc);
 
         //获取值
+        System.out.println("创建终端请求：" + url.toString());
         ResponseEntity<String> forEntity = restTemplate.postForEntity(url.toString(), null, String.class);
+        System.out.println("创建终端响应：" + forEntity.getBody());
         /**
          * 解析json
          *{

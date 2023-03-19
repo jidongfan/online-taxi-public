@@ -24,8 +24,8 @@ public class TerminalService {
      * @param name
      * @return
      */
-    public ResponseResult<TerminalResponse> add(String name){
+    public ResponseResult<TerminalResponse> add(String name, String desc){
 
-        return terminalClient.add(name);
+        return terminalClient.add(name, desc);
     }
 }
