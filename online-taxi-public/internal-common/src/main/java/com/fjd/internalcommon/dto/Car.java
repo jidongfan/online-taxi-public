@@ -170,6 +170,11 @@ public class Car implements Serializable {
     private Boolean states;
 
     /**
+     * 车辆对应tid 终端id
+     */
+    private String tid;
+
+    /**
      * 创建时间
      */
     private LocalDateTime gmtCreate;
