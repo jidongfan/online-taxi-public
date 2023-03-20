@@ -3,12 +3,16 @@ package com.fjd.servicemap.remote;
 import com.fjd.internalcommon.constant.AmapConfigConstants;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.response.TerminalResponse;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author: fanjidong R22496
@@ -67,5 +71,77 @@ public class TerminalClient {
         terminalResponse.setTid(tid);
 
         return ResponseResult.success(terminalResponse);
+    }
+
+    /**
+     * 周边搜索
+     * @param center
+     * @param radius
+     * @return
+     */
+    public  ResponseResult<List<TerminalResponse>> aroundsearch(String center, Integer radius){
+        //拼装请求的url
+        StringBuilder url = new StringBuilder();
+        url.append(AmapConfigConstants.TERMINAL_AROUNDSEARCH);
+        url.append("?");
+        url.append("key=" + amapKey);
+        url.append("&");
+        url.append("sid=" + amapsid);
+        url.append("&");
+        url.append("center=" + center);
+        url.append("&");
+        url.append("radius=" + radius);
+
+        //获取值
+        System.out.println("终端搜索请求：" + url.toString());
+        ResponseEntity<String> forEntity = restTemplate.postForEntity(url.toString(), null, String.class);
+        System.out.println("终端搜索响应：" + forEntity.getBody());
+
+        /**
+         * {
+         * 	"data": {
+         * 		"results": [{
+         * 			"createtime": 1679269473618,
+         * 			"desc": "1637600979625549826",
+         * 			"locatetime": 1679223906440,
+         * 			"location": {
+         * 				"accuracy": 550.0,
+         * 				"direction": 511.0,
+         * 				"distance": 0,
+         * 				"height": null,
+         * 				"latitude": 40.00305,
+         * 				"longitude": 116.32842,
+         * 				"speed": 255.0,
+         * 				"trackProps": null
+         *                        },
+         * 			"name": "京N2222",
+         * 			"props": null,
+         * 			"tid": 652715132* 		}]
+         * 	}
+         * }
+         **/
+        //解析终端搜索结果
+        String body = forEntity.getBody();
+        JSONObject result = JSONObject.fromObject(body);
+        JSONObject data = result.getJSONObject("data");
+
+        ArrayList<TerminalResponse> terminalResponseList = new ArrayList<>();
+
+        JSONArray results = data.getJSONArray("results");
+        for (int i = 0; i < results.size(); i++) {
+            TerminalResponse terminalResponse = new TerminalResponse();
+
+            JSONObject jsonObject = results.getJSONObject(i);
+            String carId = jsonObject.getString("desc");
+            String tid = jsonObject.getString("tid");
+
+            terminalResponse.setCarId(carId);
+            terminalResponse.setTid(tid);
+
+            terminalResponseList.add(terminalResponse);
+        }
+
+        return ResponseResult.success(terminalResponseList);
+
     }
 }

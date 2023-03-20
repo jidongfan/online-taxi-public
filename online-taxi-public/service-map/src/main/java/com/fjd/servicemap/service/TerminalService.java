@@ -7,6 +7,8 @@ import com.google.common.net.InetAddresses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author: fanjidong R22496
  * @version: 1.0
@@ -27,5 +29,16 @@ public class TerminalService {
     public ResponseResult<TerminalResponse> add(String name, String desc){
 
         return terminalClient.add(name, desc);
+    }
+
+    /**
+     * 周边搜索
+     * @param center
+     * @param radius
+     * @return
+     */
+    public  ResponseResult<List<TerminalResponse>> aroudsearch(String center, Integer radius){
+
+        return terminalClient.aroundsearch(center, radius);
     }
 }
