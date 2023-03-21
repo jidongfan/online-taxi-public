@@ -49,8 +49,6 @@ public class UserService {
             passengerUserMapper.insert(passengerUser);
         }
 
-        //如果不存在，插入用户信息
-
         return ResponseResult.success();
     }
 

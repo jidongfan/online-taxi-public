@@ -10,4 +10,25 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>internal-common</artifactId>
+
+    <dependencies>
+        <!--json @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.13.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.13.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.13.3</version>
+        </dependency>
+    </dependencies>
 </project>
