@@ -5,16 +5,20 @@ import com.fjd.internalcommon.request.OrderRequest;
 import com.fjd.serviceorder.service.impl.OrderInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
 
 /**
- * @author: fanjidong R22496
- * @version: 1.0
- * @Date: 2023/3/22 7:58
- * @desc:
+ * <p>
+ *  前端控制器
+ * </p>
+ *
+ * @author fanjidong
+ * @since 2023-03-23
  */
-@RestController
-@RequestMapping("/order")
-public class OrderController {
+@Controller
+@RequestMapping("/orderInfo")
+public class OrderInfoController {
+
 
     @Autowired
     private OrderInfoService orderService;
@@ -31,10 +35,4 @@ public class OrderController {
         return null;
     }
 
-
-    @GetMapping("/testMapper")
-    public String testMapper(){
-
-        return orderService.testMapper();
-    }
 }
