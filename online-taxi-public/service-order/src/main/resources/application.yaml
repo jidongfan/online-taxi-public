@@ -1,0 +1,9 @@
+server:
+  port: 8007
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.250.4.7:8848
+  application:
+    name: service-order

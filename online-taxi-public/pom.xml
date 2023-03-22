@@ -19,6 +19,11 @@
         <module>internal-common</module>
         <module>service-passenger-user</module>
         <module>service-price</module>
+        <module>service-verificationcode</module>
+        <module>service-map</module>
+        <module>api-driver</module>
+        <module>service-driver-user</module>
+        <module>api-boss</module>
     </modules>
 
     <packaging>pom</packaging>

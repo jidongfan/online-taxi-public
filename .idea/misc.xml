@@ -8,11 +8,9 @@
       <list>
         <option value="$PROJECT_DIR$/online-taxi-public/pom.xml" />
         <option value="$PROJECT_DIR$/service-verificationcode/pom.xml" />
-        <option value="$PROJECT_DIR$/online-taxi-public/service-verificationcode/pom.xml" />
-        <option value="$PROJECT_DIR$/online-taxi-public/internal-common/pom.xml" />
-        <option value="$PROJECT_DIR$/online-taxi-public/api-passenger/pom.xml" />
+        <option value="$PROJECT_DIR$/online-taxi-public/service-order/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
 </project>
