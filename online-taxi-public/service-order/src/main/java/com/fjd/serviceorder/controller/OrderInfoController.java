@@ -32,7 +32,7 @@ public class OrderInfoController {
     public ResponseResult add(@RequestBody OrderRequest orderRequest){
 
         System.out.println("下单行政区域：" + orderRequest.getAddress());
-        return null;
+        return orderService.add(orderRequest);
     }
 
 }
