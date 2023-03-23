@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @Data
 public class OrderRequest {
 
+    private Long passengerId; //乘客id
+    private String passengerPhone; //乘客手机号
     private String address; //下单行政区域
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime departTime; //出发时间
