@@ -223,4 +223,10 @@ public class OrderInfo implements Serializable {
      */
     private LocalDateTime gmtModified;
 
+    /**
+     * 运价版本，修改一次版本变一次，防止版本变更价格不准确
+     */
+    private Integer fareVersion;
+
+
 }

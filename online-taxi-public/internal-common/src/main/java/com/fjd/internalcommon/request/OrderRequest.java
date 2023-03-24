@@ -29,5 +29,6 @@ public class OrderRequest {
     private String destLatitude; //目的地纬度
     private String encrypt; //坐标加密标识：1.gcj-02 2.wjs-04 3.bd-09 4.cgcs-2000北斗 4.0-其他
     private String fareType; //运价类型编码
+    private Integer fareVersion; //运价版本，修改一次版本变一次，防止版本变更价格不准确
 
 }
