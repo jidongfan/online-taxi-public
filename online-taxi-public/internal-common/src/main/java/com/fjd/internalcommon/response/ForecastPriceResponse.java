@@ -11,5 +11,9 @@ import lombok.Data;
 @Data
 public class ForecastPriceResponse {
 
-    private Double price;
+    private Double price; //价格
+
+    private String cityCode; //城市编码
+
+    private String vehicleType; //车辆类型
 }
