@@ -12,3 +12,10 @@ spring:
     url: jdbc:mysql://localhost:3306/service-order?characterEncoding=utf-8&serverTimeZone=GMT%2B8
     username: root
     password: root
+  redis:
+    host: 10.250.4.7
+    port: 6389
+    database: 0
+logging:
+  level:
+    com.baomidou: debug

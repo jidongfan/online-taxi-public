@@ -1,17 +1,22 @@
 package com.fjd.serviceorder.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fjd.internalcommon.constant.CommonStatusEnum;
 import com.fjd.internalcommon.constant.OrderConstants;
 import com.fjd.internalcommon.dto.OrderInfo;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.OrderRequest;
+import com.fjd.internalcommon.util.RedisPrefixUtils;
 import com.fjd.serviceorder.mapper.OrderInfoMapper;
 import com.fjd.serviceorder.remote.ServicePriceClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -30,6 +35,9 @@ public class OrderInfoService {
     @Autowired
     private ServicePriceClient servicePriceClient;
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
     /**
      * 下订单
      * @param orderRequest
@@ -40,6 +48,23 @@ public class OrderInfoService {
         ResponseResult<Boolean> aNew = servicePriceClient.isNew(orderRequest.getFareType(), orderRequest.getFareVersion());
         if(!(aNew.getData())){
             return ResponseResult.fail(CommonStatusEnum.PRICE_RULE_CHANGED.getCode(), CommonStatusEnum.PRICE_RULE_CHANGED.getValue());
+        }
+
+        //需要判断，下单的设备是否是 黑名单设备
+        String deviceCode = orderRequest.getDeviceCode();
+        //生成key
+        String deviceCodeKey = RedisPrefixUtils.blackDeviceCodePrefix + deviceCode;
+        //设置key 看原来有没有key 不能进行如下操作，会造成死锁
+        //Long increment = stringRedisTemplate.opsForValue().increment(deviceCodeKey);
+        //设置过期时间
+        //stringRedisTemplate.expire(deviceCodeKey, 1, TimeUnit.MINUTES);
+        if (isBlackDevice(deviceCodeKey))
+            return ResponseResult.fail(CommonStatusEnum.DEVICE_IS_BLACK.getCode(), CommonStatusEnum.DEVICE_IS_BLACK.getValue());
+        System.out.println(deviceCodeKey);
+
+        //有正在进行的订单就不允许创建
+        if(isOrderGoingon(orderRequest.getPassengerId()) > 0L){
+            return ResponseResult.fail(CommonStatusEnum.ORDER_GOING_ON.getCode(), CommonStatusEnum.ORDER_GOING_ON.getValue());
         }
 
         OrderInfo orderInfo = new OrderInfo();
@@ -53,7 +78,53 @@ public class OrderInfoService {
         orderInfo.setGmtModified(now);
 
         orderInfoMapper.insert(orderInfo);
-        return ResponseResult.success();
+        return ResponseResult.success("");
+    }
+
+    /**
+     * 判断当前设备是否超过下单次数
+     * @param deviceCodeKey
+     * @return
+     */
+    private boolean isBlackDevice(String deviceCodeKey) {
+        Boolean aBoolean = stringRedisTemplate.hasKey(deviceCodeKey);
+        if(aBoolean){
+            String s = stringRedisTemplate.opsForValue().get(deviceCodeKey);
+            int i = Integer.parseInt(s);
+            if(i >= 2){
+                //当前设备超过下单次数
+                return true;
+            }else{
+                stringRedisTemplate.opsForValue().increment(deviceCodeKey);
+            }
+        }else{
+            stringRedisTemplate.opsForValue().setIfAbsent(deviceCodeKey, "1", 1L, TimeUnit.HOURS);
+        }
+        return false;
+    }
+
+
+    /**
+     * 判断是否有正在进行的订单
+     * @param passengerId
+     * @return
+     */
+    public Long isOrderGoingon(Long passengerId){
+        //判断有正在进行的订单不允许下单
+        QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("passenger_id", passengerId);
+        queryWrapper.and(wrapper -> wrapper.eq("order_status", OrderConstants.ORDER_START)
+                .or().eq("order_status", OrderConstants.DRIVER_RECEIVE_ORDER)
+                .or().eq("order_status", OrderConstants.DRIVER_TO_PICK_UP_PASSENGER)
+                .or().eq("order_status", OrderConstants.DRIVER_ARRIVED_DEPARTURE)
+                .or().eq("order_status", OrderConstants.PICK_UP_PASSENGER)
+                .or().eq("order_status", OrderConstants.TO_START_PAY)
+                .or().eq("order_status", OrderConstants.PASSENGER_GETOFF)
+        );
+
+        //有正在进行的订单就不允许创建
+        Long validOrderNumber = orderInfoMapper.selectCount(queryWrapper);
+        return validOrderNumber;
     }
 
 }

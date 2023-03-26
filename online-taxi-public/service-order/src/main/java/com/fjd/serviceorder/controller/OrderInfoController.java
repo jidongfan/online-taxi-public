@@ -1,11 +1,14 @@
 package com.fjd.serviceorder.controller;
 
+import com.fjd.internalcommon.constant.HeaderParamConstants;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.OrderRequest;
 import com.fjd.serviceorder.service.impl.OrderInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -15,7 +18,7 @@ import org.springframework.stereotype.Controller;
  * @author fanjidong
  * @since 2023-03-23
  */
-@Controller
+@RestController
 @RequestMapping("/orderInfo")
 public class OrderInfoController {
 
@@ -29,9 +32,13 @@ public class OrderInfoController {
      * @return
      */
     @PostMapping("/add")
-    public ResponseResult add(@RequestBody OrderRequest orderRequest){
+    public ResponseResult add(@RequestBody OrderRequest orderRequest, HttpServletRequest httpServletRequest){
 
-        System.out.println("下单行政区域：" + orderRequest.getAddress());
+        //获取请求设备唯一码  测试通过header获取deviceCode参数
+//        String deviceCode = httpServletRequest.getHeader(HeaderParamConstants.DEVICE_CODE);
+//        orderRequest.setDeviceCode(deviceCode);
+
+
         return orderService.add(orderRequest);
     }
 
