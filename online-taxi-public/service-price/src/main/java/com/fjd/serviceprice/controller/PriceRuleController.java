@@ -41,4 +41,26 @@ public class PriceRuleController {
         return priceRuleService.edit(priceRule);
     }
 
+    /**
+     * 查询最新的计价规则
+     * @param fareType
+     * @return
+     */
+    @GetMapping("/get-newest-version")
+    public ResponseResult<PriceRule> getNewestVersion(@RequestParam String fareType){
+
+        return priceRuleService.getNewestVersion(fareType);
+    }
+
+    /**
+     * 判断传入的版本号是否是最新的版本
+     * @param fareType
+     * @param fareVersion
+     * @return
+     */
+    @GetMapping("/is-new")
+    public ResponseResult<Boolean> isNew(@RequestParam String fareType, @RequestParam Integer fareVersion){
+        return priceRuleService.isNew(fareType, fareVersion);
+    }
+
 }

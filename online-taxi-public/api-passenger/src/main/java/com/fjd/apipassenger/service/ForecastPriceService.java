@@ -5,6 +5,7 @@ import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.ForecastPriceDTO;
 import com.fjd.internalcommon.response.ForecastPriceResponse;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,12 +46,14 @@ public class ForecastPriceService {
         forecastPriceDTO.setCityCode(cityCode);
         forecastPriceDTO.setVehicleType(vehicleType);
         ResponseResult<ForecastPriceResponse> forecast = servicePriceClient.forecast(forecastPriceDTO);
-        Double price = forecast.getData().getPrice();
 
+        ForecastPriceResponse data = forecast.getData();
         ForecastPriceResponse forecastPriceResponse = new ForecastPriceResponse();
-        forecastPriceResponse.setPrice(price);
-        forecastPriceResponse.setCityCode(cityCode);
-        forecastPriceResponse.setVehicleType(vehicleType);
+        forecastPriceResponse.setPrice(data.getPrice());
+        forecastPriceResponse.setFareType(data.getFareType());
+        forecastPriceResponse.setCityCode(data.getCityCode());
+        forecastPriceResponse.setVehicleType(data.getVehicleType());
+        forecastPriceResponse.setFareVersion(data.getFareVersion());
 
         return ResponseResult.success(forecastPriceResponse);
     }

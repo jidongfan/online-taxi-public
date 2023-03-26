@@ -2,6 +2,7 @@ package com.fjd.serviceprice.controller;
 
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.ForecastPriceDTO;
+import com.fjd.internalcommon.response.ForecastPriceResponse;
 import com.fjd.serviceprice.service.ForecastPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ public class ForecastPriceController {
     private ForecastPriceService forecastPriceService;
 
     @PostMapping("/forecast-price")
-    public ResponseResult forecastPrice(@RequestBody ForecastPriceDTO forecastPriceDTO){
+    public ResponseResult<ForecastPriceResponse> forecastPrice(@RequestBody ForecastPriceDTO forecastPriceDTO){
         String depLongitude = forecastPriceDTO.getDepLongitude();
         String depLatitude = forecastPriceDTO.getDepLatitude();
         String destLongitude = forecastPriceDTO.getDestLongitude();

@@ -16,4 +16,8 @@ public class ForecastPriceResponse {
     private String cityCode; //城市编码
 
     private String vehicleType; //车辆类型
+
+    private String fareType; //费用类型
+
+    private Integer fareVersion; //运价版本，修改一次版本变一次，防止版本变更价格不准确
 }
