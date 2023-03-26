@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.xml.ws.Response;
 import java.util.HashMap;
 import java.util.List;
 
@@ -131,6 +132,12 @@ public class PriceRuleService {
     }
 
 
+    /**
+     * 判断传入的版本是否是最新的版本
+     * @param fareType
+     * @param fareVersion
+     * @return
+     */
     public ResponseResult<Boolean> isNew(String fareType, Integer fareVersion){
         ResponseResult<PriceRule> newestVersionPriceRule = getNewestVersion(fareType);
         if(newestVersionPriceRule.getCode() == CommonStatusEnum.PRICE_RULE_EMPTY.getCode()){
@@ -143,6 +150,28 @@ public class PriceRuleService {
             return ResponseResult.success(false);
         }else{
             return ResponseResult.success(true);
+        }
+    }
+
+    /**
+     * 根据城市和车型判断计价规则是否存在
+     * @param priceRule
+     * @return
+     */
+    public ResponseResult<Boolean> ifExists(PriceRule priceRule){
+        String cityCode = priceRule.getCityCode();
+        String vehicleType = priceRule.getVehicleType();
+
+        QueryWrapper<PriceRule> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("city_code", cityCode);
+        queryWrapper.eq("vehicle_type", vehicleType);
+
+        List<PriceRule> priceRules = priceRuleMapper.selectList(queryWrapper);
+
+        if(priceRules.size() > 0){
+            return ResponseResult.success(true);
+        }else{
+            return ResponseResult.success(false);
         }
     }
 }
