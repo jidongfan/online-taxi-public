@@ -1,9 +1,10 @@
-package com.fjd.serviceorder.service.impl;
+package com.fjd.serviceorder.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fjd.internalcommon.constant.CommonStatusEnum;
 import com.fjd.internalcommon.constant.OrderConstants;
 import com.fjd.internalcommon.dto.OrderInfo;
+import com.fjd.internalcommon.dto.PriceRule;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.OrderRequest;
 import com.fjd.internalcommon.util.RedisPrefixUtils;
@@ -50,17 +51,15 @@ public class OrderInfoService {
             return ResponseResult.fail(CommonStatusEnum.PRICE_RULE_CHANGED.getCode(), CommonStatusEnum.PRICE_RULE_CHANGED.getValue());
         }
 
-        //需要判断，下单的设备是否是 黑名单设备
-        String deviceCode = orderRequest.getDeviceCode();
-        //生成key
-        String deviceCodeKey = RedisPrefixUtils.blackDeviceCodePrefix + deviceCode;
-        //设置key 看原来有没有key 不能进行如下操作，会造成死锁
-        //Long increment = stringRedisTemplate.opsForValue().increment(deviceCodeKey);
-        //设置过期时间
-        //stringRedisTemplate.expire(deviceCodeKey, 1, TimeUnit.MINUTES);
-        if (isBlackDevice(deviceCodeKey))
+        //判断下单的设备是否是黑名单
+        if (isBlackDevice(orderRequest)) {
             return ResponseResult.fail(CommonStatusEnum.DEVICE_IS_BLACK.getCode(), CommonStatusEnum.DEVICE_IS_BLACK.getValue());
-        System.out.println(deviceCodeKey);
+        }
+
+        //判断：下单的城市和计价规则是否正常
+        if(!isPriceRuleExists(orderRequest)){
+            return ResponseResult.fail(CommonStatusEnum.CITY_SERVICE_NOT_SERVICE.getCode(), CommonStatusEnum.CITY_SERVICE_NOT_SERVICE.getValue());
+        }
 
         //有正在进行的订单就不允许创建
         if(isOrderGoingon(orderRequest.getPassengerId()) > 0L){
@@ -81,12 +80,43 @@ public class OrderInfoService {
         return ResponseResult.success("");
     }
 
+
     /**
-     * 判断当前设备是否超过下单次数
-     * @param deviceCodeKey
+     * 判断 下单城市的计价规则是否正常
+     * @param orderRequest
      * @return
      */
-    private boolean isBlackDevice(String deviceCodeKey) {
+    private boolean isPriceRuleExists(OrderRequest orderRequest){
+
+        String fareType = orderRequest.getFareType();
+        int index = fareType.indexOf("$");
+        String cityCode = fareType.substring(0, index);
+        String vehicleType = fareType.substring(index + 1);
+
+        PriceRule priceRule = new PriceRule();
+        priceRule.setCityCode(cityCode);
+        priceRule.setVehicleType(vehicleType);
+
+        ResponseResult<Boolean> booleanResponseResult = servicePriceClient.ifPriceExists(priceRule);
+        return booleanResponseResult.getData();
+
+    }
+
+
+    /**
+     * 判断下单的设备是否是黑名单
+     * @param orderRequest
+     * @return
+     */
+    private boolean isBlackDevice(OrderRequest orderRequest) {
+        //需要判断，下单的设备是否是 黑名单设备
+        String deviceCode = orderRequest.getDeviceCode();
+        //生成key
+        String deviceCodeKey = RedisPrefixUtils.blackDeviceCodePrefix + deviceCode;
+        //设置key 看原来有没有key 不能进行如下操作，会造成死锁
+        //Long increment = stringRedisTemplate.opsForValue().increment(deviceCodeKey);
+        //设置过期时间
+        //stringRedisTemplate.expire(deviceCodeKey, 1, TimeUnit.MINUTES);
         Boolean aBoolean = stringRedisTemplate.hasKey(deviceCodeKey);
         if(aBoolean){
             String s = stringRedisTemplate.opsForValue().get(deviceCodeKey);

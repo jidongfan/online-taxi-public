@@ -1,9 +1,9 @@
 package com.fjd.serviceorder.remote;
 
+import com.fjd.internalcommon.dto.PriceRule;
 import com.fjd.internalcommon.dto.ResponseResult;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author: fanjidong R22496
@@ -22,4 +22,8 @@ public interface ServicePriceClient {
      */
     @GetMapping("/price-rule/is-new")
     public ResponseResult<Boolean> isNew(@RequestParam String fareType, @RequestParam Integer fareVersion);
+
+
+    @RequestMapping(method = RequestMethod.GET, value = "/price-rule/if-exists")
+    public ResponseResult<Boolean> ifPriceExists(@RequestBody PriceRule priceRule);
 }

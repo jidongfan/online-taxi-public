@@ -1,12 +1,10 @@
 package com.fjd.serviceorder.controller;
 
-import com.fjd.internalcommon.constant.HeaderParamConstants;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.OrderRequest;
-import com.fjd.serviceorder.service.impl.OrderInfoService;
+import com.fjd.serviceorder.service.OrderInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,8 +35,6 @@ public class OrderInfoController {
         //获取请求设备唯一码  测试通过header获取deviceCode参数
 //        String deviceCode = httpServletRequest.getHeader(HeaderParamConstants.DEVICE_CODE);
 //        orderRequest.setDeviceCode(deviceCode);
-
-
         return orderService.add(orderRequest);
     }
 
