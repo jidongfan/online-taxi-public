@@ -4,7 +4,7 @@ import com.fjd.internalcommon.constant.DriverCarConstants;
 import com.fjd.internalcommon.dto.DriverUser;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.response.DriverUserExistsResponse;
-import com.fjd.servicedriveruser.service.impl.DriverUserService;
+import com.fjd.servicedriveruser.service.DriverUserService;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.fjd.servicedriveruser.service.impl;
+package com.fjd.servicedriveruser.service;
 
 import com.fjd.internalcommon.dto.Car;
 import com.fjd.internalcommon.dto.ResponseResult;

@@ -2,7 +2,7 @@ package com.fjd.servicedriveruser.controller;
 
 import com.fjd.internalcommon.dto.DriverCarBindingRelationship;
 import com.fjd.internalcommon.dto.ResponseResult;
-import com.fjd.servicedriveruser.service.impl.DriverCarBindingRelationshipService;
+import com.fjd.servicedriveruser.service.DriverCarBindingRelationshipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

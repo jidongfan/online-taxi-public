@@ -2,7 +2,7 @@ package com.fjd.servicedriveruser.controller;
 
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.servicedriveruser.mapper.DriverUserMapper;
-import com.fjd.servicedriveruser.service.impl.DriverUserService;
+import com.fjd.servicedriveruser.service.DriverUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,8 +34,8 @@ public class TestController {
 
     //测试mapper中的xml是否正常使用
     @GetMapping("/test-xml")
-    public int testXml(String args){
-        return driverUserMapper.select1("1");
+    public int testXml(String cityCode){
+        return driverUserMapper.selectDriverUserCountByCityCode(cityCode);
     }
 
 }
