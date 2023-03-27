@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface DriverUserMapper extends BaseMapper<DriverUser> {
+
+    public int select1(String org);
 }
