@@ -7,17 +7,24 @@ import com.fjd.internalcommon.dto.OrderInfo;
 import com.fjd.internalcommon.dto.PriceRule;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.OrderRequest;
+import com.fjd.internalcommon.response.TerminalResponse;
 import com.fjd.internalcommon.util.RedisPrefixUtils;
 import com.fjd.serviceorder.mapper.OrderInfoMapper;
 import com.fjd.serviceorder.remote.ServiceDriverUserClient;
+import com.fjd.serviceorder.remote.ServiceMapClient;
 import com.fjd.serviceorder.remote.ServicePriceClient;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
+import net.sf.json.util.JSONUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -44,6 +51,9 @@ public class OrderInfoService {
 
     @Autowired
     private ServiceDriverUserClient serviceDriverUserClient;
+
+    @Autowired
+    private ServiceMapClient serviceMapClient;
 
     /**
      * 下订单
@@ -91,7 +101,59 @@ public class OrderInfoService {
         orderInfo.setGmtModified(now);
 
         orderInfoMapper.insert(orderInfo);
+
+        //派单
+        dispatchRealTimeOrder(orderInfo);
         return ResponseResult.success("");
+    }
+
+
+    /**
+     * 实时订单派单逻辑
+     * @param orderInfo
+     */
+    public void dispatchRealTimeOrder(OrderInfo orderInfo){
+
+        //2km内搜索
+        String depLatitude = orderInfo.getDepLatitude();
+        String depLongitude = orderInfo.getDepLongitude();
+        String center = depLatitude + "," + depLongitude; // 注意：纬度在前经度在后
+
+        ArrayList<Integer> radiusList = new ArrayList<>();
+        radiusList.add(2000);
+        radiusList.add(4000);
+        radiusList.add(5000);
+
+        ResponseResult<List<TerminalResponse>> listResponseResult = null;
+        for (int i = 0; i < radiusList.size(); i++) {
+            Integer radius = radiusList.get(i);
+            listResponseResult = serviceMapClient.terminalAroundSearch(center, radiusList.get(i));
+
+            log.info("在半径为" + radius + "的范围内，寻找车辆" + JSONArray.fromObject(listResponseResult.getData()).toString());
+          /*  public long getLong(String key) {
+                this.verifyIsNull();
+                Object o = this.get(key);
+                if (o != null) {
+                    return o instanceof Number ? ((Number)o).longValue() : (long)this.getDouble(key);
+                } else {
+                    throw new JSONException("JSONObject[" + JSONUtils.quote(key) + "] is not a number.");
+                }
+            }*/
+            JSONObject jsonArray = JSONObject.fromObject(listResponseResult.getData());
+            jsonArray.getLong("desc"); //可能会有精度丢失
+            //正确使用方式
+            long des = Long.parseLong("des");
+
+            //获得终端
+
+            //解析终端
+
+            //根据解析出来的终端，查询车辆信息
+
+            //找到符合的车辆，进行派单
+
+            //如果派单成功，则推出循环
+        }
     }
 
 
