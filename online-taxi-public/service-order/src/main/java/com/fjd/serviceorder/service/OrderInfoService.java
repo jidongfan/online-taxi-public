@@ -138,11 +138,18 @@ public class OrderInfoService {
                 } else {
                     throw new JSONException("JSONObject[" + JSONUtils.quote(key) + "] is not a number.");
                 }
-            }*/
+            }
             JSONObject jsonArray = JSONObject.fromObject(listResponseResult.getData());
             jsonArray.getLong("desc"); //可能会有精度丢失
             //正确使用方式
-            long des = Long.parseLong("des");
+            long des = Long.parseLong("des");*/
+            JSONArray result = JSONArray.fromObject(listResponseResult.getData());
+            for (int j = 0; j < result.size(); j++) {
+                JSONObject jsonObject = result.getJSONObject(i);
+                String carIdString = jsonObject.getString("carId");
+                Long carId = Long.parseLong(carIdString);
+                String tid = jsonObject.getString("tid");
+            }
 
             //获得终端
 

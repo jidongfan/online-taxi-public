@@ -2,6 +2,7 @@ package com.fjd.servicedriveruser.controller;
 
 import com.fjd.internalcommon.constant.DriverCarConstants;
 import com.fjd.internalcommon.dto.DriverUser;
+import com.fjd.internalcommon.dto.OrderDriverResponse;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.response.DriverUserExistsResponse;
 import com.fjd.servicedriveruser.service.DriverUserService;
@@ -78,5 +79,16 @@ public class UserController {
         response.setIfExists(ifExists);
 
         return ResponseResult.success(response);
+    }
+
+
+    /**
+     * 根据车辆id查询订单需要的司机信息
+     * @param carId
+     * @return
+     */
+    @GetMapping("/get-available-driver/{carId}")
+    public ResponseResult<OrderDriverResponse> getAvailableDriver(@PathVariable("carId") Long carId){
+        return driverUserService.getAvailableDriver(carId);
     }
 }
