@@ -12,3 +12,9 @@ spring:
     host: 10.250.4.7
     port: 6389
     database: 0
+logging:
+  level:
+    com.baomidou.mybatisplus: debug
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

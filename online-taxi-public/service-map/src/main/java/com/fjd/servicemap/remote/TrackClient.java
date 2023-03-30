@@ -4,6 +4,7 @@ import com.alibaba.cloud.commons.lang.StringUtils;
 import com.fjd.internalcommon.constant.AmapConfigConstants;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.response.TrackResponse;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
  * @desc:
  */
 @Service
+@Slf4j
 public class TrackClient {
     @Value("${map.key}")
     private String amapKey;
@@ -40,6 +42,7 @@ public class TrackClient {
         url.append("&");
         url.append("tid=" + tid);
 
+        log.info("高德地图创建轨迹请求：" + url);
         //获取值
         ResponseEntity<String> forEntity = restTemplate.postForEntity(url.toString(), null, String.class);
         /**
@@ -55,6 +58,7 @@ public class TrackClient {
          }
          */
         String body = forEntity.getBody();
+        log.info("高德地图创建轨迹响应：" + body);
         JSONObject result = JSONObject.fromObject(body);
         JSONObject data = result.getJSONObject("data");
         //轨迹id

@@ -22,11 +22,16 @@ public class OrderController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 乘客下订单
+     * @param orderRequest
+     * @return
+     */
     @PostMapping("/add")
     public ResponseResult add(@RequestBody OrderRequest orderRequest){
         System.out.println(orderRequest);
 
-        return null;
+        return userService.add(orderRequest);
     }
 
 }

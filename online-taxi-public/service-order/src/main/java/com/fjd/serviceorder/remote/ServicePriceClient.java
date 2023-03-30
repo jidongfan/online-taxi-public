@@ -2,6 +2,7 @@ package com.fjd.serviceorder.remote;
 
 import com.fjd.internalcommon.dto.PriceRule;
 import com.fjd.internalcommon.dto.ResponseResult;
+import com.fjd.internalcommon.request.PriceRuleIsNewRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +17,11 @@ public interface ServicePriceClient {
 
     /**
      * 判断当前费用类型的运价版本是否是最新的
-     * @param fareType
-     * @param fareVersion
+     * @param priceRuleIsNewRequest
      * @return
      */
-    @GetMapping("/price-rule/is-new")
-    public ResponseResult<Boolean> isNew(@RequestParam String fareType, @RequestParam Integer fareVersion);
+    @PostMapping("/price-rule/is-new")
+    public ResponseResult<Boolean> isNew(@RequestBody PriceRuleIsNewRequest priceRuleIsNewRequest);
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/price-rule/if-exists")

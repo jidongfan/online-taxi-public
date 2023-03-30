@@ -1,9 +1,11 @@
 package com.fjd.apipassenger.service;
 
+import com.fjd.apipassenger.remote.ServiceOrderClient;
 import com.fjd.apipassenger.remote.ServicePassengerUserClient;
 import com.fjd.internalcommon.dto.PassengerUser;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.dto.TokenResult;
+import com.fjd.internalcommon.request.OrderRequest;
 import com.fjd.internalcommon.request.VerificationCodeDTO;
 import com.fjd.internalcommon.util.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,9 @@ public class UserService {
     @Autowired
     private ServicePassengerUserClient servicePassengerUserClient;
 
+    @Autowired
+    private ServiceOrderClient serviceOrderClient;
+
     public ResponseResult getUserByAccessToken(String accessToken){
 
         log.info("accessToken:" + accessToken);
@@ -36,5 +41,14 @@ public class UserService {
         ResponseResult<PassengerUser> userByPhone = servicePassengerUserClient.getUserByPhone(phone);
 
         return ResponseResult.success(userByPhone.getData());
+    }
+
+    /**
+     * 乘客下订单
+     * @param orderRequest
+     * @return
+     */
+    public ResponseResult add(OrderRequest orderRequest){
+        return serviceOrderClient.add(orderRequest);
     }
 }

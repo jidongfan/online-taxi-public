@@ -14,4 +14,10 @@ spring:
 
   application:
       name: service-passenger-user
+logging:
+  level:
+    com.baomidou.mybatisplus: debug
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 

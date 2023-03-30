@@ -18,4 +18,7 @@ spring:
     database: 0
 logging:
   level:
-    com.baomidou: debug
+    com.baomidou.mybatisplus: debug
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

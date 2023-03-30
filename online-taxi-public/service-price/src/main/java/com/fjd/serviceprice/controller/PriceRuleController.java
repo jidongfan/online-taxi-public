@@ -2,6 +2,7 @@ package com.fjd.serviceprice.controller;
 
 import com.fjd.internalcommon.dto.PriceRule;
 import com.fjd.internalcommon.dto.ResponseResult;
+import com.fjd.internalcommon.request.PriceRuleIsNewRequest;
 import com.fjd.serviceprice.service.PriceRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -54,13 +55,12 @@ public class PriceRuleController {
 
     /**
      * 判断传入的版本号是否是最新的版本
-     * @param fareType
-     * @param fareVersion
+     * @param priceRuleIsNewRequest
      * @return
      */
-    @GetMapping("/is-new")
-    public ResponseResult<Boolean> isNew(@RequestParam String fareType, @RequestParam Integer fareVersion){
-        return priceRuleService.isNew(fareType, fareVersion);
+    @PostMapping("/is-new")
+    public ResponseResult<Boolean> isNew(@RequestBody PriceRuleIsNewRequest priceRuleIsNewRequest){
+        return priceRuleService.isNew(priceRuleIsNewRequest.getFareType(), priceRuleIsNewRequest.getFareVersion());
     }
 
     /**

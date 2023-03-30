@@ -7,6 +7,7 @@ import com.fjd.internalcommon.dto.OrderInfo;
 import com.fjd.internalcommon.dto.PriceRule;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.OrderRequest;
+import com.fjd.internalcommon.request.PriceRuleIsNewRequest;
 import com.fjd.internalcommon.response.TerminalResponse;
 import com.fjd.internalcommon.util.RedisPrefixUtils;
 import com.fjd.serviceorder.mapper.OrderInfoMapper;
@@ -70,7 +71,10 @@ public class OrderInfoService {
         }
 
         //需要判断计价规则的版本是否为最新
-        ResponseResult<Boolean> aNew = servicePriceClient.isNew(orderRequest.getFareType(), orderRequest.getFareVersion());
+        PriceRuleIsNewRequest priceRuleIsNewRequest = new PriceRuleIsNewRequest();
+        priceRuleIsNewRequest.setFareType(orderRequest.getFareType());
+        priceRuleIsNewRequest.setFareVersion(orderRequest.getFareVersion());
+        ResponseResult<Boolean> aNew = servicePriceClient.isNew(priceRuleIsNewRequest);
         if(!(aNew.getData())){
             return ResponseResult.fail(CommonStatusEnum.PRICE_RULE_CHANGED.getCode(), CommonStatusEnum.PRICE_RULE_CHANGED.getValue());
         }

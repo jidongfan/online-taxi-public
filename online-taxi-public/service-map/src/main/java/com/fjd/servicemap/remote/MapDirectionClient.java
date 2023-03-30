@@ -48,6 +48,7 @@ public class MapDirectionClient {
         log.info(urlBuild.toString());
 
         //调用高德的接口
+        log.info("高德地图路径规划请求信息：" + urlBuild.toString());
         ResponseEntity<String> directionEntity = restTemplate.getForEntity(urlBuild.toString(), String.class);
         String directionString = directionEntity.getBody();
         log.info("高德地图路径规划返回信息：" + directionString);

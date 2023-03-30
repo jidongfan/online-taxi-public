@@ -19,14 +19,14 @@ public class DriverCarConstants {
     public static Integer DRIVER_CAR_UNBIND = 2;
 
     /**
-     * 司机状态：1是有效
+     * 司机状态：0是有效
      */
-    public static Integer DRIVER_STATE_VALID = 1;
+    public static Integer DRIVER_STATE_VALID = 0;
 
     /**
-     * 司机状态：0是无效
+     * 司机状态：1是无效
      */
-    public static Integer DRIVER_STATE_INVALID = 0;
+    public static Integer DRIVER_STATE_INVALID = 1;
 
     /**
      * 司机状态：存在 1
