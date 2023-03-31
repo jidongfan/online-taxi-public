@@ -157,6 +157,9 @@ public class OrderInfoService {
                 Long carId = Long.parseLong(carIdString);
                 String tid = jsonObject.getString("tid");
 
+                long longitude = jsonObject.getLong("longitude");
+                long latitude = jsonObject.getLong("latitude");
+
                 //查询是否有对应的可派单司机
                 ResponseResult<OrderDriverResponse> availableDriver = serviceDriverUserClient.getAvailableDriver(carId);
                 if(availableDriver.getCode() == CommonStatusEnum.AVAILABLE_DRIVER_EMPTY.getCode()){
@@ -166,11 +169,36 @@ public class OrderInfoService {
                     log.info("车辆ID: " + carId + "找到了正在出车的司机");
                     OrderDriverResponse orderDriverResponse = availableDriver.getData();
                     Long driverId = orderDriverResponse.getDriverId();
+                    String driverPhone = orderDriverResponse.getDriverPhone();
+                    String licenseId = orderDriverResponse.getLicenseId();
+                    String vehicleNo = orderDriverResponse.getVehicleNo();
 
                     //判断司机是否有正在进行的订单 有正在进行的订单就不允许创建
                     if(isDriverOrderGoingon(driverId) > 0L){
                         continue ;
                     }
+
+                    //订单直接匹配司机
+                    //查询当前车辆信息
+                    QueryWrapper<Object> carQueryWrapper = new QueryWrapper<>();
+                    carQueryWrapper.eq("id", carId);
+
+                    //查询当前司机信息
+                    orderInfo.setDriverId(driverId);
+                    orderInfo.setDriverPhone(driverPhone);
+                    orderInfo.setCarId(carId);
+
+                    //从地图中来
+                    orderInfo.setReceiveOrderCarLatitude(longitude + "");
+                    orderInfo.setReceiveOrderCarLongitude(latitude + "");
+
+
+                    orderInfo.setReceiveOrderTime(LocalDateTime.now());
+                    orderInfo.setLicenseId(licenseId);
+                    orderInfo.setVehicleNo(vehicleNo);
+                    orderInfo.setOrderStatus(OrderConstants.DRIVER_RECEIVE_ORDER);
+
+                    orderInfoMapper.updateById(orderInfo);
 
                     //退出，不在进行，司机的查找
                     break redius;
@@ -245,7 +273,7 @@ public class OrderInfoService {
 
 
     /**
-     * 乘客判断是否有正在进行的订单
+     * 判断乘客是否有正在进行的订单
      * @param passengerId
      * @return
      */
@@ -268,7 +296,7 @@ public class OrderInfoService {
     }
 
     /**
-     * 司机判断是否有正在进行的订单
+     * 判断司机是否有正在进行的订单
      * @param
      * @return
      */

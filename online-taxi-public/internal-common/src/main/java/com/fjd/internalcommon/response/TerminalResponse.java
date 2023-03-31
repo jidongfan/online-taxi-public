@@ -15,4 +15,8 @@ public class TerminalResponse {
 
     private String carId;
 
+    private Long longitude; //经度
+
+    private Long latitude; // 纬度
+
 }
