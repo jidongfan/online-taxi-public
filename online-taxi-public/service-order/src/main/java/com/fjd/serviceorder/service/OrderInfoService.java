@@ -3,6 +3,7 @@ package com.fjd.serviceorder.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fjd.internalcommon.constant.CommonStatusEnum;
 import com.fjd.internalcommon.constant.OrderConstants;
+import com.fjd.internalcommon.dto.OrderDriverResponse;
 import com.fjd.internalcommon.dto.OrderInfo;
 import com.fjd.internalcommon.dto.PriceRule;
 import com.fjd.internalcommon.dto.ResponseResult;
@@ -90,7 +91,7 @@ public class OrderInfoService {
         }
 
         //有正在进行的订单就不允许创建
-        if(isOrderGoingon(orderRequest.getPassengerId()) > 0L){
+        if(isPassengerOrderGoingon(orderRequest.getPassengerId()) > 0L){
             return ResponseResult.fail(CommonStatusEnum.ORDER_GOING_ON.getCode(), CommonStatusEnum.ORDER_GOING_ON.getValue());
         }
 
@@ -129,6 +130,8 @@ public class OrderInfoService {
         radiusList.add(5000);
 
         ResponseResult<List<TerminalResponse>> listResponseResult = null;
+        //goto是为了测试，实际上需要用变量进行控制
+        redius:
         for (int i = 0; i < radiusList.size(); i++) {
             Integer radius = radiusList.get(i);
             listResponseResult = serviceMapClient.terminalAroundSearch(center, radiusList.get(i));
@@ -153,6 +156,26 @@ public class OrderInfoService {
                 String carIdString = jsonObject.getString("carId");
                 Long carId = Long.parseLong(carIdString);
                 String tid = jsonObject.getString("tid");
+
+                //查询是否有对应的可派单司机
+                ResponseResult<OrderDriverResponse> availableDriver = serviceDriverUserClient.getAvailableDriver(carId);
+                if(availableDriver.getCode() == CommonStatusEnum.AVAILABLE_DRIVER_EMPTY.getCode()){
+                    log.info("没有车辆ID： " + carId + ",对于的司机");
+                    continue redius;
+                }else{
+                    log.info("车辆ID: " + carId + "找到了正在出车的司机");
+                    OrderDriverResponse orderDriverResponse = availableDriver.getData();
+                    Long driverId = orderDriverResponse.getDriverId();
+
+                    //判断司机是否有正在进行的订单 有正在进行的订单就不允许创建
+                    if(isDriverOrderGoingon(driverId) > 0L){
+                        continue ;
+                    }
+
+                    //退出，不在进行，司机的查找
+                    break redius;
+                }
+
             }
 
             //获得终端
@@ -222,11 +245,11 @@ public class OrderInfoService {
 
 
     /**
-     * 判断是否有正在进行的订单
+     * 乘客判断是否有正在进行的订单
      * @param passengerId
      * @return
      */
-    public Long isOrderGoingon(Long passengerId){
+    public Long isPassengerOrderGoingon(Long passengerId){
         //判断有正在进行的订单不允许下单
         QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("passenger_id", passengerId);
@@ -241,6 +264,28 @@ public class OrderInfoService {
 
         //有正在进行的订单就不允许创建
         Long validOrderNumber = orderInfoMapper.selectCount(queryWrapper);
+        return validOrderNumber;
+    }
+
+    /**
+     * 司机判断是否有正在进行的订单
+     * @param
+     * @return
+     */
+    public Long isDriverOrderGoingon(Long driverId){
+        //判断有正在进行的订单不允许下单
+        QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("driver_id", driverId);
+        queryWrapper.and(wrapper -> wrapper.eq("order_status", OrderConstants.ORDER_START)
+                .or().eq("order_status", OrderConstants.DRIVER_RECEIVE_ORDER)
+                .or().eq("order_status", OrderConstants.DRIVER_TO_PICK_UP_PASSENGER)
+                .or().eq("order_status", OrderConstants.DRIVER_ARRIVED_DEPARTURE)
+                .or().eq("order_status", OrderConstants.PICK_UP_PASSENGER)
+        );
+
+        //有正在进行的订单就不允许创建
+        Long validOrderNumber = orderInfoMapper.selectCount(queryWrapper);
+        log.info("司机Id: " + driverId + ",正在进行的订单数量：" + validOrderNumber);
         return validOrderNumber;
     }
 
