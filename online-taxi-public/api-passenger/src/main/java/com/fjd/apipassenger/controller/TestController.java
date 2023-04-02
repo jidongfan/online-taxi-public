@@ -1,7 +1,11 @@
 package com.fjd.apipassenger.controller;
 
+import com.fjd.apipassenger.remote.ServiceOrderClient;
+import com.fjd.internalcommon.dto.OrderInfo;
 import com.fjd.internalcommon.dto.ResponseResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -33,5 +37,20 @@ public class TestController {
     @GetMapping("/noAuthTest")
     public ResponseResult noAuThTest(){
         return ResponseResult.success("noAuth test");
+    }
+
+    @Autowired
+    private ServiceOrderClient serviceOrderClient;
+
+    /**
+     * 测试派单逻辑
+     * @param orderId
+     * @return
+     */
+    @GetMapping("/test-real-time-order/{orderId}")
+    public String dispatchRealTimeOrder(@PathVariable("orderId") Long orderId){
+        System.out.println("并发测试：orderId：" + orderId);
+        serviceOrderClient.dispatchRealTimeOrder(orderId);
+        return "test-real-time-order success";
     }
 }
