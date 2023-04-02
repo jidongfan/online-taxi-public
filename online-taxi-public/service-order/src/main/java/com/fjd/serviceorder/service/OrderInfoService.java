@@ -117,7 +117,7 @@ public class OrderInfoService {
      * 实时订单派单逻辑
      * @param orderInfo
      */
-    public void dispatchRealTimeOrder(OrderInfo orderInfo){
+    public synchronized void dispatchRealTimeOrder(OrderInfo orderInfo){
 
         //2km内搜索
         String depLatitude = orderInfo.getDepLatitude();
@@ -157,8 +157,8 @@ public class OrderInfoService {
                 Long carId = Long.parseLong(carIdString);
                 String tid = jsonObject.getString("tid");
 
-                long longitude = jsonObject.getLong("longitude");
-                long latitude = jsonObject.getLong("latitude");
+                String longitude = jsonObject.getString("longitude");
+                String latitude = jsonObject.getString("latitude");
 
                 //查询是否有对应的可派单司机
                 ResponseResult<OrderDriverResponse> availableDriver = serviceDriverUserClient.getAvailableDriver(carId);
