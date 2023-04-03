@@ -2,6 +2,7 @@ package com.fjd.serviceorder.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fjd.internalcommon.constant.CommonStatusEnum;
+import com.fjd.internalcommon.constant.IdentityConstants;
 import com.fjd.internalcommon.constant.OrderConstants;
 import com.fjd.internalcommon.dto.OrderDriverResponse;
 import com.fjd.internalcommon.dto.OrderInfo;
@@ -15,6 +16,7 @@ import com.fjd.serviceorder.mapper.OrderInfoMapper;
 import com.fjd.serviceorder.remote.ServiceDriverUserClient;
 import com.fjd.serviceorder.remote.ServiceMapClient;
 import com.fjd.serviceorder.remote.ServicePriceClient;
+import com.fjd.serviceorder.remote.ServiceSsePushClient;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
@@ -61,6 +63,9 @@ public class OrderInfoService {
 
     @Autowired
     private RedissonClient redissonClient;
+
+    @Autowired
+    private ServiceSsePushClient serviceSsePushClient;
 
     /**
      * 下订单
@@ -209,6 +214,20 @@ public class OrderInfoService {
                     orderInfo.setOrderStatus(OrderConstants.DRIVER_RECEIVE_ORDER);
 
                     orderInfoMapper.updateById(orderInfo);
+
+                    //通知司机
+                    JSONObject driverContent = new JSONObject();
+                    driverContent.put("passengerId", orderInfo.getPassengerId());
+                    driverContent.put("passengerPhone", orderInfo.getPassengerPhone());
+                    driverContent.put("departure", orderInfo.getDeparture());
+                    driverContent.put("depLatitude", orderInfo.getDepLatitude());
+                    driverContent.put("depLongitude", orderInfo.getDepLongitude());
+
+                    driverContent.put("destination", orderInfo.getDestination());
+                    driverContent.put("destLongitude", orderInfo.getDestLongitude());
+                    driverContent.put("destLatitude", orderInfo.getDestLatitude());
+
+                    serviceSsePushClient.push(driverId, IdentityConstants.DRIVER_IDENTITY, driverContent.toString());
 
                     lock.unlock();
                     //退出，不在进行，司机的查找

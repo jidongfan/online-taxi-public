@@ -58,6 +58,7 @@ public class SseController{
      */
     @GetMapping("/push")
     public String push(@RequestParam Long userId, @RequestParam String identity, @RequestParam String content){
+        log.info("用户ID:" + userId + "，身份类型" + identity);
         String sseMapKey = SsePrefixUtils.generatorSseKey(userId, identity); // $ 分开是为了避免歧义
 
         try {
