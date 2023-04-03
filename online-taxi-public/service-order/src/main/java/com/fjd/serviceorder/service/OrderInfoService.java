@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fjd.internalcommon.constant.CommonStatusEnum;
 import com.fjd.internalcommon.constant.IdentityConstants;
 import com.fjd.internalcommon.constant.OrderConstants;
-import com.fjd.internalcommon.dto.OrderDriverResponse;
-import com.fjd.internalcommon.dto.OrderInfo;
-import com.fjd.internalcommon.dto.PriceRule;
-import com.fjd.internalcommon.dto.ResponseResult;
+import com.fjd.internalcommon.dto.*;
 import com.fjd.internalcommon.request.OrderRequest;
 import com.fjd.internalcommon.request.PriceRuleIsNewRequest;
 import com.fjd.internalcommon.response.TerminalResponse;
@@ -228,6 +225,24 @@ public class OrderInfoService {
                     driverContent.put("destLatitude", orderInfo.getDestLatitude());
 
                     serviceSsePushClient.push(driverId, IdentityConstants.DRIVER_IDENTITY, driverContent.toString());
+
+                    //通知乘客
+                    JSONObject passengerContent = new JSONObject();
+                    passengerContent.put("driverId", orderInfo.getDriverId());
+                    passengerContent.put("driverPhone", orderInfo.getDriverPhone());
+                    passengerContent.put("vehicleNo", orderInfo.getVehicleNo());
+
+                    //车辆信息，调用车辆服务查询
+                    ResponseResult<Car> carById = serviceDriverUserClient.getCarById(carId);
+                    Car carRemote = carById.getData();
+                    passengerContent.put("brand", carRemote.getBrand());
+                    passengerContent.put("vehicleType", carRemote.getVehicleType());
+                    passengerContent.put("vehicleColor", carRemote.getVehicleColor());
+
+                    passengerContent.put("receiveOrderCarLatitude", orderInfo.getReceiveOrderCarLatitude());
+                    passengerContent.put("receiveOrderCarLongitude", orderInfo.getReceiveOrderCarLongitude());
+
+                    serviceSsePushClient.push(orderInfo.getPassengerId(), IdentityConstants.PASSENGER_IDENTITY, passengerContent.toString());
 
                     lock.unlock();
                     //退出，不在进行，司机的查找

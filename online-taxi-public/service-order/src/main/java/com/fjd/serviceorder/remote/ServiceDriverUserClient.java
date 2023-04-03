@@ -1,5 +1,6 @@
 package com.fjd.serviceorder.remote;
 
+import com.fjd.internalcommon.dto.Car;
 import com.fjd.internalcommon.dto.OrderDriverResponse;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.sun.org.apache.xpath.internal.operations.Bool;
@@ -28,4 +29,12 @@ public interface ServiceDriverUserClient {
      */
     @GetMapping("/get-available-driver/{carId}")
     public ResponseResult<OrderDriverResponse> getAvailableDriver(@PathVariable("carId") Long carId);
+
+    /**
+     * 根据车辆id查询车辆信息
+     * @param carId
+     * @return
+     */
+    @GetMapping("/car")
+    public ResponseResult<Car> getCarById(@RequestParam Long carId);
 }
