@@ -8,7 +8,7 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>sse-driver-client-web</artifactId>
+	<artifactId>service-sse-push</artifactId>
 
 	<dependencies>
 		<dependency>
@@ -21,5 +21,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!--add nacos依赖 注意是服务发现，不是服务配置-->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+			<version>2021.1</version>
+		</dependency>
+
 	</dependencies>
 </project>
