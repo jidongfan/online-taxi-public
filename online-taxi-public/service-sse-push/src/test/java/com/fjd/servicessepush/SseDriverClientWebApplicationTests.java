@@ -1,4 +1,4 @@
-package com.fjd.ssedriverclientweb;
+package com.fjd.servicessepush;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
