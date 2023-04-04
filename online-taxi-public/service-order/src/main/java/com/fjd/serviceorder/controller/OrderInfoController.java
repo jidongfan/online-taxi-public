@@ -3,6 +3,7 @@ package com.fjd.serviceorder.controller;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.OrderRequest;
 import com.fjd.serviceorder.service.OrderInfoService;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +49,17 @@ public class OrderInfoController {
     public ResponseResult changeStatus(@RequestBody OrderRequest orderRequest){
 
         return orderService.toPickUpPassenger(orderRequest);
+    }
+
+    /**
+     * 司机到达乘客上车点
+     * @param orderRequest
+     * @return
+     */
+    @PostMapping("/arrived-departure")
+    public ResponseResult arrivedDeparture(@RequestBody OrderRequest orderRequest){
+
+        return orderService.arrivedDeparture(orderRequest);
     }
 
 }

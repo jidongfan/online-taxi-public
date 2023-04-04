@@ -2,6 +2,7 @@ package com.fjd.serviceorder.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fjd.internalcommon.constant.CommonStatusEnum;
+import com.fjd.internalcommon.constant.DriverCarConstants;
 import com.fjd.internalcommon.constant.IdentityConstants;
 import com.fjd.internalcommon.constant.OrderConstants;
 import com.fjd.internalcommon.dto.*;
@@ -412,6 +413,27 @@ public class OrderInfoService {
         orderInfoMapper.updateById(orderInfo);
 
         return ResponseResult.success();
+
+    }
+
+    /**
+     * 司机到达乘客上车点
+     * @param orderRequest
+     * @return
+     */
+    public ResponseResult arrivedDeparture(OrderRequest orderRequest){
+        Long orderId = orderRequest.getOrderId();
+
+        QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", orderId);
+
+        OrderInfo orderInfo = orderInfoMapper.selectOne(queryWrapper);
+        orderInfo.setOrderStatus(OrderConstants.DRIVER_ARRIVED_DEPARTURE);
+
+        orderInfo.setDriverArrivedDepartureTime(LocalDateTime.now());
+        orderInfoMapper.updateById(orderInfo);
+        return ResponseResult.success();
+
 
     }
 
