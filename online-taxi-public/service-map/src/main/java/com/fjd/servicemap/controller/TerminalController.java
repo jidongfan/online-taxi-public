@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.xml.ws.Response;
 import java.util.List;
 
 /**
@@ -48,4 +49,16 @@ public class TerminalController {
         return terminalService.aroudsearch(center, radius);
     }
 
+    /**
+     * 轨迹查询
+     * @param tid
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    @PostMapping("/trsearch")
+    public ResponseResult trsearch(String tid, Long startTime, Long endTime){
+
+        return terminalService.trsearch(tid, startTime, endTime);
+    }
 }

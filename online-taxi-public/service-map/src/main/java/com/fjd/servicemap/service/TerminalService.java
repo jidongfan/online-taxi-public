@@ -41,4 +41,16 @@ public class TerminalService {
 
         return terminalClient.aroundsearch(center, radius);
     }
+
+    /**
+     * 轨迹搜索
+     * @param tid
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public ResponseResult trsearch(String tid, Long startTime, Long endTime){
+
+        return terminalClient.trsearch(tid, startTime, endTime);
+    }
 }
