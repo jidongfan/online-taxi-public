@@ -3,6 +3,7 @@ package com.fjd.servicemap.remote;
 import com.fjd.internalcommon.constant.AmapConfigConstants;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.response.TerminalResponse;
+import com.fjd.internalcommon.response.TrsearchResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,7 +152,7 @@ public class TerminalClient {
 
     }
 
-    public ResponseResult trsearch(String tid, Long startTime, Long endTime){
+    public ResponseResult<TrsearchResponse> trsearch(String tid, Long startTime, Long endTime){
         //拼装请求的url
         StringBuilder url = new StringBuilder();
         url.append(AmapConfigConstants.TERMINAL_TRSEARCH);
@@ -184,6 +185,30 @@ public class TerminalClient {
         System.out.println("高德地图查询轨迹结果请求：" + url.toString());
         ResponseEntity<String> forEntity = restTemplate.getForEntity(url.toString(), String.class);
         System.out.println("高德地图查询轨迹结果响应：" + forEntity.getBody());
-        return null;
+
+        JSONObject result = JSONObject.fromObject(forEntity.getBody());
+        JSONObject data = result.getJSONObject("data");
+        int counts = data.getInt("counts");
+        if (counts == 0){
+            return null;
+        }
+        JSONArray tracks = data.getJSONArray("tracks");
+        long driverMile = 0L;
+        long driveTime = 0L;
+        for (int i = 0; i < tracks.size(); i++) {
+            JSONObject jsonObject = tracks.getJSONObject(i);
+
+            long distance = jsonObject.getLong("distance");
+            driverMile = driverMile + distance;
+
+            long time = jsonObject.getLong("time");
+            time = time / (1000 * 60);
+            driveTime = driveTime + time;
+        }
+
+        TrsearchResponse trsearchResponse = new TrsearchResponse();
+        trsearchResponse.setDriveMile(driverMile);
+        trsearchResponse.setDriveTime(driveTime);
+        return ResponseResult.success(trsearchResponse);
     }
 }

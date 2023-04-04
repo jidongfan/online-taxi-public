@@ -2,6 +2,7 @@ package com.fjd.servicemap.service;
 
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.response.TerminalResponse;
+import com.fjd.internalcommon.response.TrsearchResponse;
 import com.fjd.servicemap.remote.TerminalClient;
 import com.google.common.net.InetAddresses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ public class TerminalService {
      * @param endTime
      * @return
      */
-    public ResponseResult trsearch(String tid, Long startTime, Long endTime){
+    public ResponseResult<TrsearchResponse> trsearch(String tid, Long startTime, Long endTime){
 
         return terminalClient.trsearch(tid, startTime, endTime);
     }

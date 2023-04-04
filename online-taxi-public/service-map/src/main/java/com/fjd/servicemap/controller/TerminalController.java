@@ -2,6 +2,7 @@ package com.fjd.servicemap.controller;
 
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.response.TerminalResponse;
+import com.fjd.internalcommon.response.TrsearchResponse;
 import com.fjd.servicemap.service.TerminalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,7 +58,7 @@ public class TerminalController {
      * @return
      */
     @PostMapping("/trsearch")
-    public ResponseResult trsearch(String tid, Long startTime, Long endTime){
+    public ResponseResult<TrsearchResponse> trsearch(String tid, Long startTime, Long endTime){
 
         return terminalService.trsearch(tid, startTime, endTime);
     }
