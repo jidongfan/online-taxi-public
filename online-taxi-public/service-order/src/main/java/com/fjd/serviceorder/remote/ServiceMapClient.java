@@ -2,6 +2,7 @@ package com.fjd.serviceorder.remote;
 
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.response.TerminalResponse;
+import com.fjd.internalcommon.response.TrsearchResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,4 +27,14 @@ public interface ServiceMapClient {
      */
     @RequestMapping(method = RequestMethod.POST, value = "/terminal/aroundsearch")
     public ResponseResult<List<TerminalResponse>>  terminalAroundSearch(@RequestParam String center, @RequestParam Integer radius);
+
+    /**
+     * 查询终端在某个时间段内的轨迹结果
+     * @param tid
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/terminal/trsearch")
+    public ResponseResult<TrsearchResponse> trsearch(@RequestParam String tid, @RequestParam Long startTime, @RequestParam Long endTime);
 }

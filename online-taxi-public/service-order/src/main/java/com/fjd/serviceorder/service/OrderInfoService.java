@@ -9,6 +9,7 @@ import com.fjd.internalcommon.dto.*;
 import com.fjd.internalcommon.request.OrderRequest;
 import com.fjd.internalcommon.request.PriceRuleIsNewRequest;
 import com.fjd.internalcommon.response.TerminalResponse;
+import com.fjd.internalcommon.response.TrsearchResponse;
 import com.fjd.internalcommon.util.RedisPrefixUtils;
 import com.fjd.serviceorder.mapper.OrderInfoMapper;
 import com.fjd.serviceorder.remote.ServiceDriverUserClient;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -476,6 +478,17 @@ public class OrderInfoService {
         orderInfo.setPassengerGetoffLatitude(orderRequest.getPassengerGetoffLatitude());
         orderInfo.setPassengerGetoffLongitude(orderRequest.getPassengerGetoffLongitude());
         orderInfo.setOrderStatus(OrderConstants.PASSENGER_GETOFF);
+
+        //订单行驶的路程和时间，调用 service-map
+        ResponseResult<Car> carById = serviceDriverUserClient.getCarById(orderInfo.getCarId());
+        Long startTime = orderInfo.getPickUpPassengerTime().toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        Long endTime = LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        System.out.println("开始时间：" + startTime);
+        System.out.println("结束时间：" + endTime);
+        ResponseResult<TrsearchResponse> trsearch = serviceMapClient.trsearch(carById.getData().getTid(), startTime, endTime);
+        TrsearchResponse data = trsearch.getData();
+        orderInfo.setDriverMile(data.getDriveMile());
+        orderInfo.setDriverTime(data.getDriveTime());
 
         orderInfoMapper.updateById(orderInfo);
         return ResponseResult.success();
