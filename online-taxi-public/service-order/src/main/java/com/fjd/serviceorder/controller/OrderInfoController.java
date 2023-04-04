@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.ws.Response;
 
 /**
  * <p>
@@ -36,6 +37,17 @@ public class OrderInfoController {
 //        String deviceCode = httpServletRequest.getHeader(HeaderParamConstants.DEVICE_CODE);
 //        orderRequest.setDeviceCode(deviceCode);
         return orderService.add(orderRequest);
+    }
+
+    /**
+     * 去接乘客
+     * @param orderRequest
+     * @return
+     */
+    @PostMapping("/to-pick-up-passenger")
+    public ResponseResult changeStatus(@RequestBody OrderRequest orderRequest){
+
+        return orderService.toPickUpPassenger(orderRequest);
     }
 
 }

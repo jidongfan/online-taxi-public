@@ -65,7 +65,7 @@ public class OrderInfoService {
     private ServiceSsePushClient serviceSsePushClient;
 
     /**
-     * 下订单
+     * 下订单 新建订单
      * @param orderRequest
      * @return
      */
@@ -114,17 +114,34 @@ public class OrderInfoService {
 
         orderInfoMapper.insert(orderInfo);
 
-        //派单
-        dispatchRealTimeOrder(orderInfo);
+        //定时任务的处理，依次在2km 4km 5km 每隔20s查找一次，共六次
+        for (int i = 0; i < 6; i++) {
+            //派单 如果result = 1派单成功，如果result = 0派单失败
+            int result = dispatchRealTimeOrder(orderInfo);
+            if(result == 1){
+                break;
+            }
+            //等待20s
+            try {
+                Thread.sleep(2);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         return ResponseResult.success("");
     }
 
 
     /**
      * 实时订单派单逻辑
+     * 如果result = 1派单成功
+     * 如果result = 0派单失败
      * @param orderInfo
      */
-    public void dispatchRealTimeOrder(OrderInfo orderInfo){
+    public int dispatchRealTimeOrder(OrderInfo orderInfo){
+        log.info("循环一次");
+        int result = 0;
 
         //2km内搜索
         String depLatitude = orderInfo.getDepLatitude();
@@ -157,15 +174,22 @@ public class OrderInfoService {
             jsonArray.getLong("desc"); //可能会有精度丢失
             //正确使用方式
             long des = Long.parseLong("des");*/
-            JSONArray result = JSONArray.fromObject(listResponseResult.getData());
-            for (int j = 0; j < result.size(); j++) {
-                JSONObject jsonObject = result.getJSONObject(j);
-                String carIdString = jsonObject.getString("carId");
-                Long carId = Long.parseLong(carIdString);
-                String tid = jsonObject.getString("tid");
+            //JSONArray resultArray = JSONArray.fromObject(listResponseResult.getData());
+            List<TerminalResponse> data = listResponseResult.getData();
+            //测试循环
+            //ArrayList<TerminalResponse> data = new ArrayList<>(); //测试没找一次车都是null的
+            for (int j = 0; j < data.size(); j++) {
+                TerminalResponse terminalResponse = data.get(j);
+                Long carId = terminalResponse.getCarId();
 
-                String longitude = jsonObject.getString("longitude");
-                String latitude = jsonObject.getString("latitude");
+                String longitude = terminalResponse.getLongitude();
+                String latitude = terminalResponse.getLatitude();
+//                String carIdString = jsonObject.getString("carId");
+//                Long carId = Long.parseLong(carIdString);
+//                String tid = jsonObject.getString("tid");
+//
+//                String longitude = jsonObject.getString("longitude");
+//                String latitude = jsonObject.getString("latitude");
 
                 //查询是否有对应的可派单司机
                 ResponseResult<OrderDriverResponse> availableDriver = serviceDriverUserClient.getAvailableDriver(carId);
@@ -243,7 +267,7 @@ public class OrderInfoService {
                     passengerContent.put("receiveOrderCarLongitude", orderInfo.getReceiveOrderCarLongitude());
 
                     serviceSsePushClient.push(orderInfo.getPassengerId(), IdentityConstants.PASSENGER_IDENTITY, passengerContent.toString());
-
+                    result = 1;
                     lock.unlock();
                     //退出，不在进行，司机的查找
                     break redius;
@@ -261,6 +285,7 @@ public class OrderInfoService {
 
             //如果派单成功，则推出循环
         }
+        return result;
     }
 
 
@@ -360,6 +385,34 @@ public class OrderInfoService {
         Long validOrderNumber = orderInfoMapper.selectCount(queryWrapper);
         log.info("司机Id: " + driverId + ",正在进行的订单数量：" + validOrderNumber);
         return validOrderNumber;
+    }
+
+    /**
+     * 司机去接乘客
+     * @param orderRequest
+     * @return
+     */
+    public ResponseResult toPickUpPassenger(OrderRequest orderRequest){
+        Long orderId = orderRequest.getOrderId();
+        LocalDateTime toPickUpPassengerTime = orderRequest.getToPickUpPassengerTime();
+        String toPickUpPassengerLongitude = orderRequest.getToPickUpPassengerLongitude();
+        String toPickUpPassengerLatitude = orderRequest.getToPickUpPassengerLatitude();
+        String toPickUpPassengerAddress = orderRequest.getToPickUpPassengerAddress();
+
+        QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", orderId);
+        OrderInfo orderInfo = orderInfoMapper.selectOne(queryWrapper);
+
+        orderInfo.setToPickUpPassengerAddress(toPickUpPassengerAddress);
+        orderInfo.setToPickUpPassengerLatitude(toPickUpPassengerLatitude);
+        orderInfo.setToPickUpPassengerLongitude(toPickUpPassengerLongitude);
+        orderInfo.setToPickUpPassengerTime(LocalDateTime.now());
+        orderInfo.setOrderStatus(OrderConstants.DRIVER_TO_PICK_UP_PASSENGER);
+
+        orderInfoMapper.updateById(orderInfo);
+
+        return ResponseResult.success();
+
     }
 
 }

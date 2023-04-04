@@ -13,7 +13,7 @@ public class TerminalResponse {
 
     private String tid;
 
-    private String carId;
+    private Long carId;
 
     private String longitude; //经度
 
