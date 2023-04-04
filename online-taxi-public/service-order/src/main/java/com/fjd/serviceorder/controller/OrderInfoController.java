@@ -62,4 +62,25 @@ public class OrderInfoController {
         return orderService.arrivedDeparture(orderRequest);
     }
 
+    /**
+     * 司机接到乘客
+     * @param orderRequest
+     * @return
+     */
+    @PostMapping("/pick-up-passenger")
+    public ResponseResult pickUpPassenger(@RequestBody OrderRequest orderRequest){
+        return orderService.pickUpPassenger(orderRequest);
+    }
+
+    /**
+     * 乘客到达目的地，行程终止
+     * @param orderRequest
+     * @return
+     */
+    @PostMapping("/passenger-getoff")
+    public ResponseResult passengerGetoff(@RequestBody OrderRequest orderRequest){
+        return orderService.passengerGetoff(orderRequest);
+    }
+
+
 }
