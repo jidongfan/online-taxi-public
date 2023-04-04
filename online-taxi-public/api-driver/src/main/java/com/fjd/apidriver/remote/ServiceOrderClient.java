@@ -30,6 +30,14 @@ public interface ServiceOrderClient {
      * @param orderRequest
      * @return
      */
-    @RequestMapping(method = RequestMethod.POST, value = "/arrived-departure")
+    @RequestMapping(method = RequestMethod.POST, value = "/orderInfo/arrived-departure")
     public ResponseResult arrivedDeparture(@RequestBody OrderRequest orderRequest);
+
+    /**
+     * 司机接到乘客
+     * @param orderRequest
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/orderInfo/pick-up-passenger")
+    public ResponseResult pickUpPassenger(OrderRequest orderRequest);
 }
