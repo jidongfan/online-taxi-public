@@ -1,6 +1,11 @@
 package com.fjd.apidriver.service;
 
+import com.fjd.apidriver.remote.ServiceSsePushClient;
+import com.fjd.internalcommon.constant.IdentityConstants;
 import com.fjd.internalcommon.dto.ResponseResult;
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,10 +17,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class PayService {
 
+    @Autowired
+    private ServiceSsePushClient serviceSsePushClient;
+
+    /**
+     * 司机发起收款
+     * @param orderId
+     * @param price
+     * @param passengerId
+     * @return
+     */
     public ResponseResult pushPayInfo(Long orderId, Double price, Long passengerId){
         //封装消息
+        JSONObject message = new JSONObject();
+        message.put("price", price);
+        message.put("passengerId", passengerId);
 
         //推送消息
+        serviceSsePushClient.pushPayInfo(passengerId, IdentityConstants.PASSENGER_IDENTITY, message.toString());
 
         return ResponseResult.success();
     }
