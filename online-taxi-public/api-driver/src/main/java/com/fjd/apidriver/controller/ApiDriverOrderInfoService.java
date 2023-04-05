@@ -54,4 +54,13 @@ public class ApiDriverOrderInfoService {
         return apiDriverOrderInfoService.pickUpPassenger(orderRequest);
     }
 
+    /**
+     * 乘客到达目的地，行程终止
+     * @param orderRequest
+     * @return
+     */
+    @PostMapping("/passenger-getoff")
+    public ResponseResult passengerGetoff(@RequestBody OrderRequest orderRequest){
+        return apiDriverOrderInfoService.passengerGetoff(orderRequest);
+    }
 }

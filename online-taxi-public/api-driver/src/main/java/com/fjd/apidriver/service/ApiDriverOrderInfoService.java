@@ -5,6 +5,7 @@ import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.OrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.xml.ws.Response;
@@ -46,5 +47,14 @@ public class ApiDriverOrderInfoService {
      */
     public ResponseResult pickUpPassenger(OrderRequest orderRequest){
         return serviceOrderClient.pickUpPassenger(orderRequest);
+    }
+
+    /**
+     * 乘客到达目的地，行程终止
+     * @param orderRequest
+     * @return
+     */
+    public ResponseResult passengerGetoff(OrderRequest orderRequest){
+        return serviceOrderClient.passengerGetoff(orderRequest);
     }
 }

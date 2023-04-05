@@ -40,4 +40,12 @@ public interface ServiceOrderClient {
      */
     @RequestMapping(method = RequestMethod.POST, value = "/orderInfo/pick-up-passenger")
     public ResponseResult pickUpPassenger(OrderRequest orderRequest);
+
+    /**
+     * 乘客到达目的地，行程终止
+     * @param orderRequest
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/orderInfo/passenger-getoff")
+    public ResponseResult passengerGetoff(OrderRequest orderRequest);
 }
