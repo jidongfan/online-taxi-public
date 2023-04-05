@@ -1,5 +1,6 @@
 package com.fjd.apidriver.controller;
 
+import com.fjd.apidriver.service.ApiDriverOrderInfoService;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.OrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
  * @desc:
  */
 @RestController
-@RequestMapping("/order")
-public class ApiDriverOrderInfoService {
+@RequestMapping("/orderInfo")
+public class ApiDriverOrderInfoController {
 
     @Autowired
-    private com.fjd.apidriver.service.ApiDriverOrderInfoService apiDriverOrderInfoService;
+    private ApiDriverOrderInfoService apiDriverOrderInfoService;
 
     /**
      * 去接乘客

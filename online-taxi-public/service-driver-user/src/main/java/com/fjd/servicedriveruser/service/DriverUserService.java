@@ -137,6 +137,7 @@ public class DriverUserService {
 
             orderDriverResponse.setLicenseId(driverUser.getLicenseId());
             orderDriverResponse.setVehicleNo(car.getVehicle());
+            orderDriverResponse.setVehicleType(car.getVehicleType());
 
             return ResponseResult.success(orderDriverResponse);
         }

@@ -152,6 +152,13 @@ public class TerminalClient {
 
     }
 
+    /**
+     * 轨迹搜索
+     * @param tid
+     * @param startTime
+     * @param endTime
+     * @return
+     */
     public ResponseResult<TrsearchResponse> trsearch(String tid, Long startTime, Long endTime){
         //拼装请求的url
         StringBuilder url = new StringBuilder();
