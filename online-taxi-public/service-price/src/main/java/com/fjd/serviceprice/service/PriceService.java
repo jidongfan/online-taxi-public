@@ -12,12 +12,8 @@ import com.fjd.serviceprice.mapper.PriceRuleMapper;
 import com.fjd.serviceprice.remote.ServiceMapClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +26,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class ForecastPriceService {
+public class PriceService {
 
     @Autowired
     private ServiceMapClient serviceMapClient;
@@ -100,6 +96,35 @@ public class ForecastPriceService {
         forecastPriceResponse.setFareVersion(priceRule.getFareVersion());
 
         return ResponseResult.success(forecastPriceResponse);
+    }
+
+    /**
+     * 计算实际价格
+     * @param distance
+     * @param duration
+     * @param cityCode
+     * @param vehicleType
+     * @return
+     */
+    public ResponseResult calculatePrice(Integer distance, Integer duration, String cityCode, String vehicleType){
+        //查询计价规则
+        QueryWrapper<PriceRule> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("city_code", cityCode);
+        queryWrapper.eq("vehicle_type",vehicleType);
+        queryWrapper.orderByDesc("fare_version");
+
+        List<PriceRule> priceRules = priceRuleMapper.selectList(queryWrapper);
+        if(priceRules.size() == 0){
+            return ResponseResult.fail(CommonStatusEnum.PRICE_RULE_EMPTY.getValue());
+        }
+
+        PriceRule priceRule = priceRules.get(0);
+
+        log.info("根据距离、时长和计价规则，计算价格");
+
+        Double price = getPrice(distance, duration, priceRule);
+        return ResponseResult.success(price);
+
     }
 
     /**
