@@ -233,5 +233,10 @@ public class OrderInfo implements Serializable {
      */
     private Integer fareVersion;
 
+    /**
+     * 订单价格
+     */
+    private Double price;
+
 
 }

@@ -494,10 +494,21 @@ public class OrderInfoService {
         Long endTime = LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli();
         System.out.println("开始时间：" + startTime);
         System.out.println("结束时间：" + endTime);
+        //测试的时候注意不要跨天
         ResponseResult<TrsearchResponse> trsearch = serviceMapClient.trsearch(carById.getData().getTid(), startTime, endTime);
         TrsearchResponse data = trsearch.getData();
-        orderInfo.setDriverMile(data.getDriveMile());
-        orderInfo.setDriverTime(data.getDriveTime());
+        Long driveMile = data.getDriveMile();
+        Long driveTime = data.getDriveTime();
+
+        orderInfo.setDriverMile(driveMile);
+        orderInfo.setDriverTime(driveTime);
+
+        //获取价格
+        String address = orderInfo.getAddress();
+        String vehicleType = orderInfo.getVehicleType();
+        ResponseResult<Double> doubleResponseResult = servicePriceClient.calculatePrice(driveMile.intValue(), driveTime.intValue(), address, vehicleType);
+        Double price = doubleResponseResult.getData();
+        orderInfo.setPrice(price);
 
         orderInfoMapper.updateById(orderInfo);
         return ResponseResult.success();
