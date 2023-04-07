@@ -16,6 +16,7 @@ import com.fjd.serviceorder.remote.ServiceDriverUserClient;
 import com.fjd.serviceorder.remote.ServiceMapClient;
 import com.fjd.serviceorder.remote.ServicePriceClient;
 import com.fjd.serviceorder.remote.ServiceSsePushClient;
+import com.sun.scenario.effect.impl.sw.java.JSWBlend_HARD_LIGHTPeer;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -529,6 +531,94 @@ public class OrderInfoService {
         orderInfoMapper.updateById(orderInfo);
 
         return ResponseResult.success();
+    }
+
+    /**
+     * 订单取消
+     * @param orderId 订单id
+     * @param identity  乘客身份
+     * @return
+     */
+    public ResponseResult cancel(Long orderId, String identity){
+        // 查询订单当前状态
+        OrderInfo orderInfo = orderInfoMapper.selectById(orderId);
+        Integer orderStatus = orderInfo.getOrderStatus();
+
+        LocalDateTime cancelTime = LocalDateTime.now();
+        Integer cancelOperator = null;
+        Integer cancelTypeCode = null;
+
+        int cancelType = 1; //取消标识 1 正常取消， 0 异常取消
+
+        // 更新订单的取消状态
+        // 如果是乘客取消
+        if(identity.trim().equals(IdentityConstants.PASSENGER_IDENTITY)){
+            switch (orderStatus){
+                //订单开始
+                case OrderConstants.ORDER_START:  //订单刚开始 乘客取消订单
+                    cancelTypeCode = OrderConstants.CANCEL_PASSENGER_BEFORE;
+                    break;
+                //司机接到订单
+                case OrderConstants.DRIVER_RECEIVE_ORDER:
+                    LocalDateTime receiveOrderTime = orderInfo.getReceiveOrderTime();
+                    long between = ChronoUnit.MINUTES.between(receiveOrderTime, cancelTime);
+                    if(between > 1){
+                        cancelTypeCode = OrderConstants.CANCEL_PASSENGER_ILLEGAL;
+                    }else{
+                        cancelTypeCode = OrderConstants.CANCEL_PASSENGER_BEFORE;
+                    }
+                    break;
+                //司机去接乘客
+                case OrderConstants.DRIVER_TO_PICK_UP_PASSENGER:
+                    cancelTypeCode = OrderConstants.CANCEL_PASSENGER_ILLEGAL;
+                    break;
+                //司机到达乘客上车点
+                case OrderConstants.DRIVER_ARRIVED_DEPARTURE:
+                    cancelTypeCode = OrderConstants.CANCEL_PASSENGER_ILLEGAL;
+                    break;
+                default:
+                    log.info("乘客取消失败");
+                    cancelType = 0;
+                    break;
+            }
+        }
+
+        // 如果是司机取消
+        if(identity.trim().equals(IdentityConstants.DRIVER_IDENTITY)){
+            switch (orderStatus){
+                //司机接订单
+                case OrderConstants.DRIVER_RECEIVE_ORDER:
+                // 司机去接乘客
+                case OrderConstants.DRIVER_TO_PICK_UP_PASSENGER:
+                //司机到达乘客上车点
+                case OrderConstants.DRIVER_ARRIVED_DEPARTURE:
+                    LocalDateTime receiveOrderTime = orderInfo.getReceiveOrderTime();
+                    long between = ChronoUnit.MINUTES.between(receiveOrderTime, cancelTime);
+                    if(between > 1){
+                        cancelTypeCode = OrderConstants.CANCEL_DRIVER_ILLEGAL;
+                    }else{
+                        cancelTypeCode = OrderConstants.CANCEL_DRIVER_BEFORE;
+                    }
+                    break;
+                default:
+                    log.info("乘客取消失败");
+                    cancelType = 0;
+                    break;
+
+            }
+        }
+
+        if(cancelType == 0){
+         return ResponseResult.fail(CommonStatusEnum.ORDER_CANCEL_ERROR.getCode(), CommonStatusEnum.ORDER_CANCEL_ERROR.getValue());
+        }
+
+        orderInfo.setCancelTypeCode(cancelTypeCode);
+        orderInfo.setCancelTime(cancelTime);
+        orderInfo.setCancelOperator(Integer.parseInt(identity));
+        orderInfo.setOrderStatus(OrderConstants.ORDER_CANCEL);
+        orderInfoMapper.updateById(orderInfo);
+
+        return null;
     }
 
 }
