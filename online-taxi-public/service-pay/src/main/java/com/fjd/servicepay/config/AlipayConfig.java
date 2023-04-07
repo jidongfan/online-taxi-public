@@ -1,4 +1,4 @@
-package com.fjd.testalipay;
+package com.fjd.servicepay.config;
 
 import com.alipay.easysdk.factory.Factory;
 import com.alipay.easysdk.kernel.Config;

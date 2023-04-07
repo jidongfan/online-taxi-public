@@ -1,4 +1,4 @@
-package com.fjd.testalipay;
+package com.fjd.servicepay;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

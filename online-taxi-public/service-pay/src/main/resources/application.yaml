@@ -7,7 +7,7 @@ spring:
       discovery:
         server-addr: 10.250.4.7:8848
   application:
-    name: service-sse-push
+    name: service-pay
 
 alipay:
   appId: 2021000122671955

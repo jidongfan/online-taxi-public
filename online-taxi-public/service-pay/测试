@@ -1,0 +1,25 @@
+买家：xsidit3112@sandbox.com
+localhost:9001/alipay/pay?subject=车费1&outTradeNo=1005&totalAmount=100
+
+支付宝回调 notify
+gmt_create,2023-04-07 14:02:26
+charset,UTF-8
+gmt_payment,2023-04-07 14:02:39
+notify_time,2023-04-07 14:02:41
+subject,车费1
+buyer_id,2088722011133433
+invoice_amount,100.00
+version,1.0
+notify_id,2023040700222140240033430523398008
+fund_bill_list,[{"amount":"100.00","fundChannel":"ALIPAYACCOUNT"}]
+notify_type,trade_status_sync
+out_trade_no,1009
+total_amount,100.00
+trade_status,TRADE_SUCCESS
+trade_no,2023040722001433430502038644
+auth_app_id,2021000122671955
+receipt_amount,100.00
+point_amount,0.00
+app_id,2021000122671955
+buyer_pay_amount,100.00
+seller_id,2088721011109510
