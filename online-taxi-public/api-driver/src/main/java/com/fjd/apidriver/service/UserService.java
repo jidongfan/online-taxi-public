@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author: fanjidong R22496
  * @version: 1.0
@@ -37,5 +39,15 @@ public class UserService {
      */
     public ResponseResult changeWorkStatus(@RequestBody DriverUserWorkStatus driverUserWorkStatus){
         return serviceDriverUserClient.changeWorkStatus(driverUserWorkStatus);
+    }
+
+    /**
+     * 根据driverPhone查询司机信息
+     * @param driverPhone
+     * @return
+     */
+    public ResponseResult getDriverCarBindingRelationship(String driverPhone){
+        //根据driverPhone查询司机信息
+        return serviceDriverUserClient.getDriverCarRelationShip(driverPhone);
     }
 }

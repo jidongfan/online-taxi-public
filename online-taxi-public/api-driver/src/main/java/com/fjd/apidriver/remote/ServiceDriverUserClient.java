@@ -1,9 +1,6 @@
 package com.fjd.apidriver.remote;
 
-import com.fjd.internalcommon.dto.Car;
-import com.fjd.internalcommon.dto.DriverUser;
-import com.fjd.internalcommon.dto.DriverUserWorkStatus;
-import com.fjd.internalcommon.dto.ResponseResult;
+import com.fjd.internalcommon.dto.*;
 import com.fjd.internalcommon.response.DriverUserExistsResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +25,14 @@ public interface ServiceDriverUserClient {
 
     /**
      * 修改司机工作状态
+     *
      * @param driverUserWorkStatus
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, value = "/driver-user-work-status")
     public ResponseResult changeWorkStatus(@RequestBody DriverUserWorkStatus driverUserWorkStatus);
 
-    }
+    @GetMapping("/driver-car-binding-relationship")
+    public ResponseResult<DriverCarBindingRelationship> getDriverCarRelationShip(@RequestParam String driverPhone);
+
+}

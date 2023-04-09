@@ -38,9 +38,9 @@ public class JwtUtils {
     private static final String JWT_TOKEN_TIME = "tokenTime";
 
     //生成token map用户名 密码
-    public static String generatorToken(String passengerPhone, String identity, String tokenType){
+    public static String generatorToken(String phone, String identity, String tokenType){
         Map<String, String> map = new HashMap<>();
-        map.put(JWT_KEY_PHONE, passengerPhone);
+        map.put(JWT_KEY_PHONE, phone);
         map.put(JWT_KEY_IDENTITY, identity);
         map.put(JWT_KEY_TYPE, tokenType);
         //token过期时间，方式生产的token重复

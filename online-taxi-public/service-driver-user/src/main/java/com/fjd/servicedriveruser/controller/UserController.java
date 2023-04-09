@@ -1,10 +1,12 @@
 package com.fjd.servicedriveruser.controller;
 
 import com.fjd.internalcommon.constant.DriverCarConstants;
+import com.fjd.internalcommon.dto.DriverCarBindingRelationship;
 import com.fjd.internalcommon.dto.DriverUser;
 import com.fjd.internalcommon.dto.OrderDriverResponse;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.response.DriverUserExistsResponse;
+import com.fjd.servicedriveruser.service.DriverCarBindingRelationshipService;
 import com.fjd.servicedriveruser.service.DriverUserService;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -23,6 +25,9 @@ public class UserController {
 
     @Autowired
     private DriverUserService driverUserService;
+
+    @Autowired
+    private DriverCarBindingRelationshipService driverCarBindingRelationshipService;
 
     /**
      * 新增司机
@@ -90,5 +95,15 @@ public class UserController {
     @GetMapping("/get-available-driver/{carId}")
     public ResponseResult<OrderDriverResponse> getAvailableDriver(@PathVariable("carId") Long carId){
         return driverUserService.getAvailableDriver(carId);
+    }
+
+    /**
+     * 根据手机号查询司机与车辆的绑定关系
+     * @param driverPhone
+     * @return
+     */
+    @GetMapping("/driver-car-binding-relationship")
+    public ResponseResult<DriverCarBindingRelationship> getDriverCarRelationShip(@RequestParam String driverPhone){
+        return driverCarBindingRelationshipService.getDriverCarRelationShipByDriverPhone(driverPhone);
     }
 }
