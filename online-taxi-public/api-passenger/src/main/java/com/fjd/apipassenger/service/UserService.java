@@ -43,12 +43,5 @@ public class UserService {
         return ResponseResult.success(userByPhone.getData());
     }
 
-    /**
-     * 乘客下订单
-     * @param orderRequest
-     * @return
-     */
-    public ResponseResult add(OrderRequest orderRequest){
-        return serviceOrderClient.add(orderRequest);
-    }
+
 }

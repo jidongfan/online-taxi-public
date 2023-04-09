@@ -1,6 +1,7 @@
 package com.fjd.apidriver.service;
 
 import com.fjd.apidriver.remote.ServiceOrderClient;
+import com.fjd.internalcommon.constant.IdentityConstants;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.OrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +57,14 @@ public class ApiDriverOrderInfoService {
      */
     public ResponseResult passengerGetoff(OrderRequest orderRequest){
         return serviceOrderClient.passengerGetoff(orderRequest);
+    }
+
+    /**
+     * 司机取消订单
+     * @param orderId
+     * @return
+     */
+    public ResponseResult cancel(Long orderId){
+        return serviceOrderClient.cancel(orderId, IdentityConstants.DRIVER_IDENTITY);
     }
 }

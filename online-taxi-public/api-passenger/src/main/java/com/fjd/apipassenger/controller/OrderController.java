@@ -1,13 +1,11 @@
 package com.fjd.apipassenger.controller;
 
+import com.fjd.apipassenger.service.OrderService;
 import com.fjd.apipassenger.service.UserService;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.OrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author: fanjidong R22496
@@ -22,6 +20,9 @@ public class OrderController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private OrderService orderService;
+
     /**
      * 乘客下订单
      * @param orderRequest
@@ -31,7 +32,17 @@ public class OrderController {
     public ResponseResult add(@RequestBody OrderRequest orderRequest){
         System.out.println(orderRequest);
 
-        return userService.add(orderRequest);
+        return orderService.add(orderRequest);
+    }
+
+    /**
+     * 乘客取消订单
+     * @param orderId
+     * @return
+     */
+    @PostMapping("/cancel")
+    public ResponseResult cancel(@RequestParam Long orderId){
+        return orderService.cancel(orderId);
     }
 
 }

@@ -3,10 +3,7 @@ package com.fjd.apidriver.remote;
 import com.fjd.internalcommon.dto.ResponseResult;
 import com.fjd.internalcommon.request.OrderRequest;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author: fanjidong R22496
@@ -39,7 +36,7 @@ public interface ServiceOrderClient {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, value = "/orderInfo/pick-up-passenger")
-    public ResponseResult pickUpPassenger(OrderRequest orderRequest);
+    public ResponseResult pickUpPassenger(@RequestBody OrderRequest orderRequest);
 
     /**
      * 乘客到达目的地，行程终止
@@ -47,5 +44,14 @@ public interface ServiceOrderClient {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, value = "/orderInfo/passenger-getoff")
-    public ResponseResult passengerGetoff(OrderRequest orderRequest);
+    public ResponseResult passengerGetoff(@RequestBody OrderRequest orderRequest);
+
+    /**
+     * 司机取消订单
+     * @param orderId
+     * @param identity
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/orderInfo/cancel")
+    public ResponseResult cancel(@RequestParam Long orderId, @RequestParam String identity);
 }
