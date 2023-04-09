@@ -23,6 +23,12 @@ public class DriverUserWorkStatusService {
     @Autowired
     DriverUserWorkStatusMapper driverUserWorkStatusMapper;
 
+    /**
+     * 修改司机工作状态
+     * @param driverId
+     * @param workStatus
+     * @return
+     */
     public ResponseResult changeWorkStatus(Long driverId, Integer workStatus){
 
         HashMap<String, Object> queryMap = new HashMap<>();

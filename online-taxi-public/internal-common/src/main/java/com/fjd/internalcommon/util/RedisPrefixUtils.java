@@ -9,7 +9,7 @@ package com.fjd.internalcommon.util;
 public class RedisPrefixUtils {
 
     //验证码的前缀
-    public static String verificationCodePerfix = "passenger-verification-code-";
+    public static String verificationCodePerfix = "verification-code-";
 
     //token 存储前缀
     public static String tokenPrefix = "token-";

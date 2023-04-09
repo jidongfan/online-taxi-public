@@ -33,6 +33,12 @@ public class TerminalClient {
     @Autowired
     private RestTemplate restTemplate;
 
+    /**
+     * 获取terminal id  tid
+     * @param name
+     * @param desc
+     * @return
+     */
     public ResponseResult<TerminalResponse> add(String name, String desc){
         //拼装请求的url
         StringBuilder url = new StringBuilder();

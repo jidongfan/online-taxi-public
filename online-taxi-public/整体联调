@@ -1,0 +1,22 @@
+整体联调
+
+乘客端：
+手机号：99999999999
+token：
+"accessToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6Ijk5OTk5OTk5OTk5IiwiaWRlbnRpdHkiOiIxIiwidG9rZW5UaW1lIjoiU3VuIEFwciAwOSAxMTo1ODo1MCBDU1QgMjAyMyIsInRva2VuVHlwZSI6ImFjY2Vzc1Rva2VuIn0.NTkRK-ScRJXQGvtjjDnesKxqlE0vZupSrm2tBEo_JBE"
+"refreshToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6Ijk5OTk5OTk5OTk5IiwiaWRlbnRpdHkiOiIxIiwidG9rZW5UaW1lIjoiU3VuIEFwciAwOSAxMTo1ODo1MCBDU1QgMjAyMyIsInRva2VuVHlwZSI6InJlZnJlc2hUb2tlbiJ9.zxMSET2Rn-XuxBzTT8F_dfLHYqPIPtxDpq-KMQNVkko"
+
+司机端：
+手机号：88888888888
+token：
+"accessToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6Ijg4ODg4ODg4ODg4IiwiaWRlbnRpdHkiOiIyIiwidG9rZW5UaW1lIjoiU3VuIEFwciAwOSAxNDowMjoxMiBDU1QgMjAyMyIsInRva2VuVHlwZSI6ImFjY2Vzc1Rva2VuIn0.l59fQ2BFUskizBPc8n4k8p1Zvz5vS2c04-RRUPAFxJE"
+"refreshToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6Ijg4ODg4ODg4ODg4IiwiaWRlbnRpdHkiOiIyIiwidG9rZW5UaW1lIjoiU3VuIEFwciAwOSAxNDowMjoxMyBDU1QgMjAyMyIsInRva2VuVHlwZSI6InJlZnJlc2hUb2tlbiJ9.Epgmh0BiXJNtzYiNd7fPe6bkzn-5XXSEPU1McFA-rZk"
+
+
+预估价格
+"depLongitude": "116.35",
+"depLatitude": "39.99",
+"destLongitude": "116.38",
+"destLatitude": "39.97",
+"cityCode": "110000",
+"vehicleType": "X6"

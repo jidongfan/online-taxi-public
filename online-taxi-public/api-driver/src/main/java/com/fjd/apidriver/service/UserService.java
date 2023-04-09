@@ -2,9 +2,11 @@ package com.fjd.apidriver.service;
 
 import com.fjd.apidriver.remote.ServiceDriverUserClient;
 import com.fjd.internalcommon.dto.DriverUser;
+import com.fjd.internalcommon.dto.DriverUserWorkStatus;
 import com.fjd.internalcommon.dto.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -26,5 +28,14 @@ public class UserService {
      */
     public ResponseResult updateUser(DriverUser driverUser){
         return serviceDriverUserClient.updateUser(driverUser);
+    }
+
+    /**
+     * 修改司机工作状态
+     * @param driverUserWorkStatus
+     * @return
+     */
+    public ResponseResult changeWorkStatus(@RequestBody DriverUserWorkStatus driverUserWorkStatus){
+        return serviceDriverUserClient.changeWorkStatus(driverUserWorkStatus);
     }
 }
