@@ -127,11 +127,19 @@ public class OrderInfoService {
             if(result == 1){
                 break;
             }
-            //等待20s
-            try {
-                Thread.sleep(2);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+
+            //最后一个循环 不需要等待 订单无效
+            if(i == 5){
+                //订单无效
+                orderInfo.setOrderStatus(OrderConstants.ORDER_INVALID);
+                orderInfoMapper.updateById(orderInfo);
+            }else{
+                //等待20s
+                try {
+                    Thread.sleep(2);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
 
