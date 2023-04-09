@@ -1,8 +1,10 @@
 package com.fjd.apidriver.service;
 
+import com.fjd.apidriver.remote.ServiceOrderClient;
 import com.fjd.apidriver.remote.ServiceSsePushClient;
 import com.fjd.internalcommon.constant.IdentityConstants;
 import com.fjd.internalcommon.dto.ResponseResult;
+import com.fjd.internalcommon.request.OrderRequest;
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class PayService {
     @Autowired
     private ServiceSsePushClient serviceSsePushClient;
 
+    @Autowired
+    private ServiceOrderClient serviceOrderClient;
+
     /**
      * 司机发起收款
      * @param orderId
@@ -32,6 +37,12 @@ public class PayService {
         JSONObject message = new JSONObject();
         message.put("price", price);
         message.put("passengerId", passengerId);
+
+        //修改订单状态
+        OrderRequest orderRequest = new OrderRequest();
+        orderRequest.setOrderId(orderId);
+
+        serviceOrderClient.pushPayInfo(orderRequest);
 
         //推送消息
         serviceSsePushClient.pushPayInfo(passengerId, IdentityConstants.PASSENGER_IDENTITY, message.toString());

@@ -54,4 +54,12 @@ public interface ServiceOrderClient {
      */
     @RequestMapping(method = RequestMethod.POST, value = "/orderInfo/cancel")
     public ResponseResult cancel(@RequestParam Long orderId, @RequestParam String identity);
+
+    /**
+     * 司机发起收款，修改订单状态
+     * @param orderRequest
+     * @return
+     */
+    @PostMapping("/orderInfo/push-pay-info")
+    public ResponseResult pushPayInfo(@RequestBody OrderRequest orderRequest);
 }

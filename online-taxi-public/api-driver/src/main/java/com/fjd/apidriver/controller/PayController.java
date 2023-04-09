@@ -2,6 +2,7 @@ package com.fjd.apidriver.controller;
 
 import com.fjd.apidriver.service.PayService;
 import com.fjd.internalcommon.dto.ResponseResult;
+import com.fjd.internalcommon.request.OrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,5 +30,7 @@ public class PayController {
 
         return payService.pushPayInfo(orderId, price, passengerId);
     }
+
+
 
 }

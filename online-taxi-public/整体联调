@@ -20,3 +20,51 @@ token：
 "destLatitude": "39.97",
 "cityCode": "110000",
 "vehicleType": "X6"
+
+
+orderId: 1645031096274489346
+
+
+
+
+{
+    "carId": 1644946740809916416,
+    "points": [
+        {
+            "location": "116.35,39.99",
+            "locatetime": 1681041789243
+        },
+        {
+                    "location": "116.35,39.98",
+                    "locatetime": 1681041799243
+        },
+        {
+                    "location": "116.36,39.98",
+                    "locatetime": 1681041809243
+        },
+        {
+                    "location": "116.37,39.98",
+                    "locatetime": 1681041819243
+        },
+        {
+                    "location": "116.36,39.97",
+                    "locatetime": 1681041829243
+        },
+        {
+                    "location": "116.35,39.97",
+                    "locatetime": 1681041839243
+        },
+        {
+                    "location": "116.35,39.99",
+                    "locatetime": 1681041849243
+        },
+        {
+                    "location": "116.37,39.97",
+                    "locatetime": 1681041859243
+        },
+        {
+                    "location": "116.35,39.97",
+                    "locatetime": 1681041869243
+        }
+    ]
+}

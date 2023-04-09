@@ -83,6 +83,16 @@ public class OrderInfoController {
     }
 
     /**
+     * 司机发起收款，修改订单状态
+     * @param orderRequest
+     * @return
+     */
+    @PostMapping("/push-pay-info")
+    public ResponseResult pushPayInfo(@RequestBody OrderRequest orderRequest){
+        return orderService.pushPayInfo(orderRequest);
+    }
+
+    /**
      * 支付完成
      * @param orderRequest
      * @return
